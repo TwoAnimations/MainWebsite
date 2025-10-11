@@ -40,6 +40,10 @@
                         <div class="stat-number" id="stat-activity">100%</div>
                         <div class="stat-label">Активность</div>
                     </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="stat-level">1</div>
+                        <div class="stat-label">Уровень</div>
+                    </div>
                 </div>
                 
                 <!-- Информация профиля -->
@@ -69,16 +73,42 @@
                     </div>
                     
                     <div class="info-item">
+                        <div class="info-label">Последний вход:</div>
+                        <div class="info-value" id="info-last-login">-</div>
+                    </div>
+                    
+                    <div class="info-item">
                         <div class="info-label">ID пользователя:</div>
                         <div class="info-value" id="info-userid" style="font-size: 12px; word-break: break-all;">-</div>
+                    </div>
+                </div>
+
+                <!-- Дополнительная информация -->
+                <div class="profile-info">
+                    <h3 style="color: white; margin-bottom: 20px;">Достижения</h3>
+                    <div class="info-item">
+                        <div class="info-label">Первые шаги:</div>
+                        <div class="info-value">✅ Завершено</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Активный участник:</div>
+                        <div class="info-value">⏳ В процессе</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Ветеран платформы:</div>
+                        <div class="info-value">🔒 Заблокировано</div>
                     </div>
                 </div>
                 
                 <!-- Действия -->
                 <div class="dashboard-actions">
                     <button class="btn-secondary" onclick="editProfile()">Редактировать профиль</button>
+                    <button class="btn-secondary" onclick="changePassword()">Сменить пароль</button>
                     <button class="btn-secondary" onclick="logout()">Выйти</button>
                 </div>
+
+                <!-- Дополнительное пространство внизу для лучшей прокрутки -->
+                <div style="height: 50px;"></div>
             </div>
         </div>
     </div>
@@ -88,5 +118,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="app.js"></script>
     <script src="dashboard.js"></script>
+    <script>
+        function changePassword() {
+            alert('Функция смены пароля в разработке');
+        }
+    </script>
 </body>
 </html>
