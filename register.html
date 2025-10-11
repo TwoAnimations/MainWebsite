@@ -73,22 +73,5 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="app.js"></script>
-    <script>
-        // Инициализация для страницы регистрации
-        document.addEventListener('DOMContentLoaded', function() {
-            const registerForm = document.getElementById('registerForm');
-            const resendBtn = document.getElementById('resend-btn');
-            
-            if (registerForm) {
-                registerForm.addEventListener('submit', handleRegister);
-            }
-            
-            if (resendBtn) {
-                resendBtn.addEventListener('click', resendVerification);
-            }
-            
-            checkEmailVerification();
-        });
-    </script>
 </body>
 </html>
