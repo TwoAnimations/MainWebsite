@@ -441,18 +441,48 @@ function checkEmailVerification() {
 }
 
 // Проверка авторизации
+// Проверка авторизации - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Проверка авторизации - ИСПРАВЛЕННАЯ ВЕРСИЯ
 function checkAuth() {
     auth.onAuthStateChanged((user) => {
         if (user && user.emailVerified) {
-            // Если пользователь уже авторизован, перенаправляем на dashboard
+            // Если пользователь уже авторизован и на странице входа, перенаправляем на dashboard
             if (window.location.pathname.includes('index.html') || 
                 window.location.pathname.endsWith('/')) {
-                window.location.href = 'dashboard.html';
+                // Проверяем, что мы еще не на dashboard, чтобы избежать цикла
+                if (!window.location.pathname.includes('dashboard.html')) {
+                    window.location.href = 'dashboard.html';
+                }
+            }
+        } else if (!user) {
+            // Если пользователь не авторизован и на dashboard, перенаправляем на вход
+            if (window.location.pathname.includes('dashboard.html')) {
+                window.location.href = 'index.html';
             }
         }
     });
 }
 
+// Функция для создания аватара пользователя на всех страницах - ИСПРАВЛЕННАЯ ВЕРСИЯ
+function createUserAvatarOnAllPages() {
+    auth.onAuthStateChanged(async (user) => {
+        if (user && user.emailVerified) {
+            // Загружаем данные пользователя
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+                createAvatarElement(userData, user.email);
+            }
+        } else {
+            // Если пользователь не авторизован, удаляем аватар если он есть
+            const existingAvatar = document.querySelector('.user-avatar');
+            const existingMenu = document.querySelector('.user-menu');
+            
+            if (existingAvatar) existingAvatar.remove();
+            if (existingMenu) existingMenu.remove();
+        }
+    });
+}
 // Выход из системы
 function logout() {
     auth.signOut().then(() => {
