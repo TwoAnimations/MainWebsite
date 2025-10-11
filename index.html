@@ -3,442 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Меню - Жидкое стекло</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        /* Контейнер меню в стиле жидкого стекла */
-        .glass-menu {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            width: 100%;
-            max-width: 400px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Эффект жидких волн */
-        .glass-menu::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(255, 255, 255, 0.1),
-                rgba(255, 255, 255, 0.05),
-                transparent
-            );
-            transform: rotate(45deg);
-            animation: liquidFlow 6s ease-in-out infinite;
-            z-index: 0;
-        }
-
-        @keyframes liquidFlow {
-            0%, 100% {
-                transform: rotate(45deg) translateX(-100%);
-            }
-            50% {
-                transform: rotate(45deg) translateX(100%);
-            }
-        }
-
-        /* Заголовок меню */
-        .menu-header {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .menu-title {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff, #e2e8f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-        }
-
-        .menu-subtitle {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            font-weight: 400;
-        }
-
-        /* Навигационное меню */
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Пункты меню */
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 16px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .menu-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.1),
-                transparent
-            );
-            transition: left 0.5s ease;
-        }
-
-        .menu-item:hover::before {
-            left: 100%;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 
-                0 4px 15px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }
-
-        /* Иконки меню */
-        .menu-icon {
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .menu-item:hover .menu-icon {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-
-        /* Текст пункта меню */
-        .menu-text {
-            flex: 1;
-            font-weight: 500;
-            font-size: 16px;
-        }
-
-        /* Индикатор активного пункта */
-        .menu-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        /* Разделитель */
-        .menu-divider {
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.3),
-                transparent
-            );
-            margin: 20px 0;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Профиль пользователя */
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            margin-top: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .user-info {
-            flex: 1;
-        }
-
-        .user-name {
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .user-status {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 12px;
-        }
-
-        /* Кнопка выхода */
-        .logout-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 8px;
-            color: rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
-        /* Анимация появления */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .glass-menu {
-            animation: slideInUp 0.6s ease-out;
-        }
-
-        /* Адаптивность */
-        @media (max-width: 480px) {
-            .glass-menu {
-                padding: 20px;
-                margin: 10px;
-            }
-
-            .menu-title {
-                font-size: 24px;
-            }
-
-            .menu-item {
-                padding: 14px 16px;
-            }
-        }
-
-        /* Дополнительные эффекты */
-        .floating-elements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .floating-element {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .floating-element:nth-child(1) {
-            width: 60px;
-            height: 60px;
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .floating-element:nth-child(2) {
-            width: 40px;
-            height: 40px;
-            top: 60%;
-            right: 10%;
-            animation-delay: 2s;
-        }
-
-        .floating-element:nth-child(3) {
-            width: 30px;
-            height: 30px;
-            bottom: 20%;
-            left: 20%;
-            animation-delay: 4s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0deg);
-            }
-            33% {
-                transform: translateY(-20px) rotate(120deg);
-            }
-            66% {
-                transform: translateY(10px) rotate(240deg);
-            }
-        }
-    </style>
+    <title>TwoAnimations | Вход и Регистрация</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="glass-menu">
-        <!-- Плавающие элементы для эффекта глубины -->
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
+    <!-- Основной контейнер -->
+    <div class="container" id="container">
+        
+        <!-- Форма регистрации -->
+        <div class="form-container sign-up-container">
+            <form action="#">
+                <h1>Создать аккаунт</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><img src="assets/github.svg" alt="Github"></a>
+                    <a href="#" class="social"><img src="assets/twitter.svg" alt="Twitter"></a>
+                    <a href="#" class="social"><img src="assets/linkedin.svg" alt="LinkedIn"></a>
+                </div>
+                <span>или используйте email для регистрации</span>
+                <input type="text" placeholder="Имя" required />
+                <input type="email" placeholder="Email" required />
+                <input type="password" placeholder="Пароль" required />
+                <button type="submit">Зарегистрироваться</button>
+            </form>
         </div>
 
-        <!-- Заголовок меню -->
-        <div class="menu-header">
-            <h1 class="menu-title">Навигация</h1>
-            <p class="menu-subtitle">Выберите раздел</p>
+        <!-- Форма входа -->
+        <div class="form-container sign-in-container">
+            <form action="#">
+                <h1>Войти</h1>
+                <div class="social-container">
+                    <a href="#" class="social"><img src="assets/github.svg" alt="Github"></a>
+                    <a href="#" class="social"><img src="assets/twitter.svg" alt="Twitter"></a>
+                    <a href="#" class="social"><img src="assets/linkedin.svg" alt="LinkedIn"></a>
+                </div>
+                <span>или используйте свой аккаунт</span>
+                <input type="email" placeholder="Email" required />
+                <input type="password" placeholder="Пароль" required />
+                <a href="#">Забыли пароль?</a>
+                <button type="submit">Войти</button>
+            </form>
         </div>
 
-        <!-- Основное меню -->
-        <nav class="nav-menu">
-            <a href="#" class="menu-item">
-                <div class="menu-icon">🏠</div>
-                <span class="menu-text">Главная</span>
-                <div class="menu-badge">New</div>
-            </a>
-
-            <a href="#" class="menu-item">
-                <div class="menu-icon">👤</div>
-                <span class="menu-text">Профиль</span>
-            </a>
-
-            <a href="#" class="menu-item">
-                <div class="menu-icon">⚙️</div>
-                <span class="menu-text">Настройки</span>
-            </a>
-
-            <a href="#" class="menu-item">
-                <div class="menu-icon">📊</div>
-                <span class="menu-text">Аналитика</span>
-                <div class="menu-badge">3</div>
-            </a>
-
-            <a href="#" class="menu-item">
-                <div class="menu-icon">🔒</div>
-                <span class="menu-text">Безопасность</span>
-            </a>
-        </nav>
-
-        <!-- Разделитель -->
-        <div class="menu-divider"></div>
-
-        <!-- Дополнительные пункты -->
-        <nav class="nav-menu">
-            <a href="#" class="menu-item">
-                <div class="menu-icon">❓</div>
-                <span class="menu-text">Помощь</span>
-            </a>
-
-            <a href="#" class="menu-item">
-                <div class="menu-icon">📞</div>
-                <span class="menu-text">Поддержка</span>
-            </a>
-        </nav>
-
-        <!-- Профиль пользователя -->
-        <div class="user-profile">
-            <div class="user-avatar">A</div>
-            <div class="user-info">
-                <div class="user-name">Алексей Иванов</div>
-                <div class="user-status">Online</div>
+        <!-- Панель перекрытия -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <!-- Левая панель перекрытия (активна при входе) -->
+                <div class="overlay-panel overlay-left">
+                    <h1>С возвращением!</h1>
+                    <p>Чтобы оставаться на связи с нами, пожалуйста, войдите под своими данными</p>
+                    <button class="ghost" id="signIn">Войти</button>
+                </div>
+                <!-- Правая панель перекрытия (активна при регистрации) -->
+                <div class="overlay-panel overlay-right">
+                    <h1>Привет, друг!</h1>
+                    <p>Введите свои личные данные и начните путешествие с нами</p>
+                    <button class="ghost" id="signUp">Зарегистрироваться</button>
+                </div>
             </div>
-            <button class="logout-btn" title="Выйти">🚪</button>
         </div>
     </div>
 
-    <script>
-        // Добавляем интерактивность
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Удаляем активный класс у всех пунктов
-                document.querySelectorAll('.menu-item').forEach(i => {
-                    i.style.background = 'rgba(255, 255, 255, 0.05)';
-                });
-                
-                // Добавляем активный класс к текущему пункту
-                this.style.background = 'rgba(255, 255, 255, 0.15)';
-                
-                // Анимация клика
-                this.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 150);
-            });
-        });
-
-        // Анимация появления элементов
-        document.addEventListener('DOMContentLoaded', function() {
-            const items = document.querySelectorAll('.menu-item');
-            items.forEach((item, index) => {
-                item.style.animation = `slideInUp 0.6s ease-out ${index * 0.1}s both`;
-            });
-        });
-    </script>
 </body>
 </html>
