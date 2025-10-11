@@ -14,6 +14,12 @@
                 <p>Выберите способ входа</p>
             </div>
 
+            <!-- Переключатель между формами входа -->
+            <div class="login-switcher">
+                <button class="switch-btn active" data-form="login-email-form">Вход по Email</button>
+                <button class="switch-btn" data-form="login-username-form">Вход по Имени</button>
+            </div>
+
             <!-- Форма входа по email -->
             <div class="form-container active" id="login-email-form">
                 <h2>Вход по Email</h2>
@@ -52,12 +58,6 @@
                 </p>
             </div>
 
-            <!-- Переключатель между формами входа -->
-            <div class="login-switcher">
-                <button class="switch-btn active" data-form="login-email-form">Вход по Email</button>
-                <button class="switch-btn" data-form="login-username-form">Вход по Имени</button>
-            </div>
-
             <!-- Форма подтверждения email -->
             <div class="form-container" id="verify-form">
                 <h2>Подтвердите email</h2>
@@ -74,46 +74,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="app.js"></script>
-</body>
-
-    <!-- Добавьте в оба файла -->
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-
-<script>
-// Конфигурация Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyC5XKTbkLrz-UglKyQ4LMhGQbETEgj848Y",
-  authDomain: "twoanimations-272f9.firebaseapp.com",
-  projectId: "twoanimations-272f9",
-  storageBucket: "twoanimations-272f9.firebasestorage.app",
-  messagingSenderId: "558163948231",
-  appId: "1:558163948231:web:9f14867c526d4888f3c4e2",
-  measurementId: "G-5XJZTCYWCB"
-};
-    
-// Инициализация Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-</script>
-
-    <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TwoAnimations - Вход и Регистрация</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
