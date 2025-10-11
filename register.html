@@ -17,7 +17,7 @@
             <!-- Форма регистрации -->
             <div class="form-container active" id="register-form">
                 <h2>Создать аккаунт</h2>
-                <form class="auth-form" id="registration-form">
+                <form class="auth-form">
                     <div class="input-group">
                         <input type="text" id="register-name" required>
                         <label for="register-name">Имя пользователя</label>
@@ -34,34 +34,13 @@
                         <input type="password" id="register-confirm" required>
                         <label for="register-confirm">Подтвердите пароль</label>
                     </div>
-                    <button type="submit" class="btn-primary" id="register-btn">Создать аккаунт</button>
+                    <button type="submit" class="btn-primary">Создать аккаунт</button>
                 </form>
-                
-                <!-- Форма подтверждения email -->
-                <div class="form-container" id="verify-form" style="display: none;">
-                    <h2>Подтверждение Email</h2>
-                    <p style="color: white; text-align: center; margin-bottom: 20px;">
-                        Мы отправили код подтверждения на ваш email
-                    </p>
-                    <form class="auth-form" id="verification-form">
-                        <div class="input-group">
-                            <input type="text" id="verification-code" required maxlength="6">
-                            <label for="verification-code">Код подтверждения</label>
-                        </div>
-                        <button type="submit" class="btn-primary">Подтвердить</button>
-                    </form>
-                    <p class="switch-form">
-                        Не получили код? <a href="#" id="resend-code">Отправить снова</a>
-                    </p>
-                </div>
-                
                 <p class="switch-form">
                     Уже есть аккаунт? <a href="https://twoanimations.github.io/MainWebsite/index.html" class="switch-link">Войти</a>
                 </p>
             </div>
         </div>
     </div>
-
-    <script src="auth.js"></script>
 </body>
 </html>
