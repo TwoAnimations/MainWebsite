@@ -4,24 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TwoAnimations - Вход и регистрация</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <!-- Форма входа -->
         <div class="form-container sign-in-container">
-            <form class="form" action="#" method="post">
+            <form action="#" class="form">
                 <h1>Вход в TwoAnimations</h1>
-                <div class="input-group">
-                    <input type="email" id="signin-email" required>
-                    <label for="signin-email">Email</label>
-                    <div class="underline"></div>
+                <div class="social-container">
+                    <a href="#" class="social"><img src="https://img.icons8.com/color/48/000000/github.png" alt="GitHub"></a>
+                    <a href="#" class="social"><img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google"></a>
                 </div>
-                <div class="input-group">
-                    <input type="password" id="signin-password" required>
-                    <label for="signin-password">Пароль</label>
-                    <div class="underline"></div>
-                </div>
+                <span>или используйте email для входа</span>
+                <input type="email" placeholder="Email" required />
+                <input type="password" placeholder="Пароль" required />
                 <a href="#" class="forgot-password">Забыли пароль?</a>
                 <button type="submit" class="btn">Войти</button>
             </form>
@@ -29,28 +26,17 @@
         
         <!-- Форма регистрации -->
         <div class="form-container sign-up-container">
-            <form class="form" action="#" method="post">
+            <form action="#" class="form">
                 <h1>Регистрация в TwoAnimations</h1>
-                <div class="input-group">
-                    <input type="text" id="signup-username" required>
-                    <label for="signup-username">Имя пользователя</label>
-                    <div class="underline"></div>
+                <div class="social-container">
+                    <a href="#" class="social"><img src="https://img.icons8.com/color/48/000000/github.png" alt="GitHub"></a>
+                    <a href="#" class="social"><img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google"></a>
                 </div>
-                <div class="input-group">
-                    <input type="email" id="signup-email" required>
-                    <label for="signup-email">Email</label>
-                    <div class="underline"></div>
-                </div>
-                <div class="input-group">
-                    <input type="password" id="signup-password" required>
-                    <label for="signup-password">Пароль</label>
-                    <div class="underline"></div>
-                </div>
-                <div class="input-group">
-                    <input type="password" id="signup-confirm-password" required>
-                    <label for="signup-confirm-password">Подтвердите пароль</label>
-                    <div class="underline"></div>
-                </div>
+                <span>или используйте email для регистрации</span>
+                <input type="text" placeholder="Имя пользователя" required />
+                <input type="email" placeholder="Email" required />
+                <input type="password" placeholder="Пароль" required />
+                <input type="password" placeholder="Подтвердите пароль" required />
                 <button type="submit" class="btn">Зарегистрироваться</button>
             </form>
         </div>
@@ -59,14 +45,14 @@
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
-                    <h1>Уже есть аккаунт?</h1>
-                    <p>Войдите, чтобы продолжить работу с TwoAnimations</p>
+                    <h1>С возвращением!</h1>
+                    <p>Чтобы оставаться на связи с нами, войдите в свою учетную запись</p>
                     <button class="btn ghost" id="signIn">Войти</button>
                 </div>
                 <div class="overlay-panel overlay-right">
-                    <h1>Нет аккаунта?</h1>
-                    <p>Зарегистрируйтесь, чтобы присоединиться к сообществу TwoAnimations</p>
-                    <button class="btn ghost" id="signUp">Регистрация</button>
+                    <h1>Привет, друг!</h1>
+                    <p>Введите свои данные и начните путешествие с нами</p>
+                    <button class="btn ghost" id="signUp">Зарегистрироваться</button>
                 </div>
             </div>
         </div>
