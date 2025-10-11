@@ -1,1 +1,337 @@
+/* Общие стили для всей страницы */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+/* Основные настройки шрифтов и цветов как у GitHub */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background-color: #0d1117; /* Темный фон GitHub */
+    color: #c9d1d9; /* Светло-серый текст */
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* Контейнер страницы с центрированием контента */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Стили для шапки с логотипом GitHub */
+.github-header {
+    padding: 20px 0;
+}
+
+.github-logo {
+    width: 32px;
+    height: 32px;
+    fill: #f0f6fc; /* Белый цвет логотипа */
+}
+
+/* Стили для основного контента */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+/* Заголовок страницы */
+.page-title {
+    font-size: 24px;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #f0f6fc;
+}
+
+/* Контейнер для форм аутентификации */
+.auth-container {
+    background-color: #161b22; /* Темный фон формы */
+    border: 1px solid #21262d; /* Граница формы */
+    border-radius: 6px; /* Скругленные углы */
+    width: 100%;
+    max-width: 340px;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+/* Скрываем радиокнопки переключения вкладок */
+.tab-toggle {
+    display: none;
+}
+
+/* Навигация между вкладками входа и регистрации */
+.tab-navigation {
+    display: flex;
+    border-bottom: 1px solid #21262d;
+    background-color: #161b22;
+}
+
+/* Стили для кнопок переключения вкладок */
+.tab-button {
+    flex: 1;
+    padding: 16px;
+    text-align: center;
+    background: none;
+    border: none;
+    color: #8b949e; /* Серый цвет неактивной вкладки */
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+/* Эффект при наведении на кнопки вкладок */
+.tab-button:hover {
+    background-color: #1a212d;
+    color: #c9d1d9;
+}
+
+/* Стили для активной вкладки с использованием CSS селекторов */
+#login-tab:checked ~ .tab-navigation .tab-button[for="login-tab"],
+#signup-tab:checked ~ .tab-navigation .tab-button[for="signup-tab"] {
+    background-color: #0d1117;
+    color: #f0f6fc; /* Белый цвет активной вкладки */
+}
+
+/* Индикатор активной вкладки (полоска снизу) */
+#login-tab:checked ~ .tab-navigation .tab-button[for="login-tab"]::after,
+#signup-ttab:checked ~ .tab-navigation .tab-button[for="signup-tab"]::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #f78166; /* Оранжевый цвет как у GitHub */
+}
+
+/* Общие стили для форм */
+.auth-form {
+    padding: 20px;
+    display: none; /* По умолчанию скрываем все формы */
+}
+
+/* Показываем активную форму с помощью CSS селекторов */
+#login-tab:checked ~ #login-form,
+#signup-tab:checked ~ #signup-form {
+    display: block;
+}
+
+/* Стили для групп полей ввода */
+.form-group {
+    margin-bottom: 16px;
+}
+
+/* Метки для полей ввода */
+.input-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #f0f6fc;
+}
+
+/* Контейнер для заголовка пароля с ссылкой "Забыли пароль?" */
+.password-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+/* Стили для полей ввода */
+.form-input {
+    width: 100%;
+    padding: 5px 12px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #c9d1d9;
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* Эффект фокуса для полей ввода */
+.form-input:focus {
+    border-color: #1f6feb; /* Синий цвет фокуса GitHub */
+    box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.3); /* Светло-синяя тень */
+}
+
+/* Стили для кнопок отправки формы */
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+    margin-top: 16px;
+}
+
+/* Основная кнопка (вход) */
+.submit-button.primary {
+    background-color: #238636; /* Зеленый цвет GitHub */
+    border-color: #238636;
+    color: white;
+}
+
+.submit-button.primary:hover {
+    background-color: #2ea043; /* Светло-зеленый при наведении */
+}
+
+/* Вторичная кнопка (регистрация) */
+.submit-button.secondary {
+    background-color: #21262d;
+    border-color: #363b42;
+    color: #c9d1d9;
+}
+
+.submit-button.secondary:hover {
+    background-color: #30363d;
+    border-color: #8b949e;
+}
+
+/* Подсказки под полями ввода */
+.input-hint {
+    font-size: 12px;
+    color: #8b949e;
+    margin-top: 4px;
+}
+
+/* Ссылки в формах */
+.forgot-link,
+.footer-link,
+.switch-link {
+    color: #58a6ff; /* Синий цвет ссылок GitHub */
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.forgot-link:hover,
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+/* Специальные стили для ссылок переключения между формами */
+.switch-link {
+    background: none;
+    border: none;
+    color: #58a6ff;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+/* Футер формы */
+.form-footer {
+    text-align: center;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #21262d;
+    font-size: 14px;
+    color: #8b949e;
+}
+
+.switch-prompt {
+    margin-top: 8px;
+}
+
+/* Секция с дополнительной информацией */
+.additional-info {
+    max-width: 340px;
+    text-align: center;
+}
+
+.additional-info h2 {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 16px;
+    color: #f0f6fc;
+}
+
+.features-list {
+    list-style: none;
+    text-align: left;
+}
+
+.features-list li {
+    padding: 8px 0;
+    position: relative;
+    padding-left: 20px;
+}
+
+.features-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #3fb950; /* Зеленый цвет галочек */
+}
+
+/* Подвал страницы */
+.page-footer {
+    padding: 40px 0;
+    text-align: center;
+    border-top: 1px solid #21262d;
+    margin-top: 40px;
+}
+
+.footer-nav {
+    margin-bottom: 16px;
+}
+
+.footer-nav .footer-link {
+    margin: 0 8px;
+    font-size: 12px;
+}
+
+.copyright {
+    font-size: 12px;
+    color: #8b949e;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 0 16px;
+    }
+    
+    .main-content {
+        padding: 20px 0;
+    }
+    
+    .page-title {
+        font-size: 20px;
+    }
+    
+    .auth-container {
+        max-width: 100%;
+    }
+    
+    .tab-button {
+        padding: 12px;
+        font-size: 13px;
+    }
+    
+    .auth-form {
+        padding: 16px;
+    }
+}
