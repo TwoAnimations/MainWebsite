@@ -255,56 +255,144 @@ h2 {
     100% { transform: translate(-20px, -20px) rotate(360deg); }
 }
 
-/* Дополнительные стили для формы подтверждения */
+/* Стили для формы подтверждения */
 .verify-message {
     text-align: center;
     color: white;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
 .verify-message p {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     line-height: 1.5;
+}
+
+.email-icon {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.user-email {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.instruction {
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin-bottom: 25px !important;
+}
+
+.verification-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.email-tips {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.email-tips h4 {
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.email-tips ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.email-tips li {
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.email-tips li:last-child {
+    margin-bottom: 0;
 }
 
 .btn-secondary {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 12px 20px;
+    padding: 15px;
     border-radius: 12px;
     color: white;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
-    margin-top: 10px;
     backdrop-filter: blur(10px);
 }
 
-.btn-secondary:hover {
+.btn-secondary:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
 }
 
-#user-email {
-    font-weight: bold;
-    color: #fff;
+.btn-secondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* Сообщения об ошибках и успехе */
 .alert {
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
     text-align: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid;
+    animation: slideIn 0.3s ease-out;
 }
 
 .alert-success {
     background: rgba(76, 175, 80, 0.2);
-    border: 1px solid rgba(76, 175, 80, 0.5);
-    color: #4CAF50;
+    border-color: rgba(76, 175, 80, 0.5);
+    color: #c8e6c9;
 }
 
 .alert-error {
     background: rgba(244, 67, 54, 0.2);
-    border: 1px solid rgba(244, 67, 54, 0.5);
-    color: #f44336;
+    border-color: rgba(244, 67, 54, 0.5);
+    color: #ffcdd2;
+}
+
+/* Анимация появления */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 480px) {
+    .verification-actions {
+        gap: 8px;
+    }
+    
+    .email-tips {
+        padding: 12px;
+    }
+    
+    .email-icon {
+        font-size: 2.5em;
+    }
 }
