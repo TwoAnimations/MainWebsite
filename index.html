@@ -62,4 +62,83 @@
         </div>
     </div>
 </body>
+
+    <!-- Добавьте в оба файла -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+<script>
+// Конфигурация Firebase
+const firebaseConfig = {
+    apiKey: "your-api-key",
+    authDomain: "your-project.firebaseapp.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "your-app-id"
+};
+
+// Инициализация Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+</script>
+
+    <!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TwoAnimations - Вход и Регистрация</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <div class="logo">
+                <h1>TwoAnimations</h1>
+                <p>С возвращением!</p>
+            </div>
+
+            <!-- Форма входа -->
+            <div class="form-container active" id="login-form">
+                <h2>Вход в аккаунт</h2>
+                <form class="auth-form" id="loginForm">
+                    <div class="input-group">
+                        <input type="email" id="login-email" required>
+                        <label for="login-email">Email</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="login-password" required>
+                        <label for="login-password">Пароль</label>
+                    </div>
+                    <button type="submit" class="btn-primary">Войти</button>
+                </form>
+                <p class="switch-form">
+                    Нет аккаунта? <a href="register.html" class="switch-link">Зарегистрироваться</a>
+                </p>
+            </div>
+
+            <!-- Форма подтверждения email -->
+            <div class="form-container" id="verify-form">
+                <h2>Подтвердите email</h2>
+                <div class="verify-message">
+                    <p>Мы отправили код подтверждения на ваш email.</p>
+                    <div class="input-group">
+                        <input type="text" id="verify-code" placeholder="Введите код" required>
+                    </div>
+                    <button class="btn-primary" id="verify-btn">Подтвердить</button>
+                    <button class="btn-secondary" id="resend-btn">Отправить код повторно</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="app.js"></script>
+</body>
 </html>
