@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Аватар пользователя (будет добавлен через JavaScript) -->
+    
     <div class="container">
         <div class="glass-card">
             <div class="logo">
@@ -14,22 +16,69 @@
                 <p>Личный кабинет</p>
             </div>
             
-            <div id="dashboard-content">
-                <div class="user-info">
-                    <h2>Добро пожаловать!</h2>
-                    <p>Email: <span id="dashboard-email"></span></p>
-                    <p>Статус: <span class="status-verified">✓ Email подтвержден</span></p>
+            <div class="dashboard-container">
+                <!-- Заголовок профиля -->
+                <div class="profile-header">
+                    <div class="profile-avatar-large" id="profile-avatar-large">
+                        UA
+                    </div>
+                    <h2 id="profile-username">Пользователь</h2>
+                    <p id="profile-email">email@example.com</p>
                 </div>
                 
-                <div class="dashboard-actions">
-                    <button class="btn-primary" onclick="logout()">Выйти</button>
+                <!-- Статистика -->
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="stat-joined">0</div>
+                        <div class="stat-label">Дней с нами</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="stat-projects">0</div>
+                        <div class="stat-label">Проектов</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="stat-activity">100%</div>
+                        <div class="stat-label">Активность</div>
+                    </div>
                 </div>
-            </div>
-            
-            <div id="auth-required" style="display: none;">
-                <h2>Требуется авторизация</h2>
-                <p>Пожалуйста, войдите в систему для доступа к этой странице.</p>
-                <button class="btn-primary" onclick="window.location.href='index.html'">Войти</button>
+                
+                <!-- Информация профиля -->
+                <div class="profile-info">
+                    <h3 style="color: white; margin-bottom: 20px;">Информация профиля</h3>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Имя пользователя:</div>
+                        <div class="info-value" id="info-username">-</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Email:</div>
+                        <div class="info-value" id="info-email">-</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Статус email:</div>
+                        <div class="info-value">
+                            <span id="info-email-status" class="status-verified">✓ Подтвержден</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Дата регистрации:</div>
+                        <div class="info-value" id="info-joined">-</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">ID пользователя:</div>
+                        <div class="info-value" id="info-userid" style="font-size: 12px; word-break: break-all;">-</div>
+                    </div>
+                </div>
+                
+                <!-- Действия -->
+                <div class="dashboard-actions">
+                    <button class="btn-secondary" onclick="editProfile()">Редактировать профиль</button>
+                    <button class="btn-secondary" onclick="logout()">Выйти</button>
+                </div>
             </div>
         </div>
     </div>
@@ -38,18 +87,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="app.js"></script>
-    <script>
-        // Проверка авторизации для dashboard
-        auth.onAuthStateChanged((user) => {
-            if (user && user.emailVerified) {
-                document.getElementById('dashboard-email').textContent = user.email;
-                document.getElementById('dashboard-content').style.display = 'block';
-                document.getElementById('auth-required').style.display = 'none';
-            } else {
-                document.getElementById('dashboard-content').style.display = 'none';
-                document.getElementById('auth-required').style.display = 'block';
-            }
-        });
-    </script>
+    <script src="dashboard.js"></script>
 </body>
 </html>
