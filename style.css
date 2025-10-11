@@ -10,17 +10,18 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 20px;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* Эффект размытого фона */
 body::before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -34,6 +35,8 @@ body::before {
     width: 100%;
     max-width: 400px;
     perspective: 1000px;
+    margin: 80px auto 40px;
+    min-height: auto;
 }
 
 .glass-card {
@@ -48,6 +51,8 @@ body::before {
         inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
     transform-style: preserve-3d;
     animation: float 6s ease-in-out infinite;
+    min-height: auto;
+    overflow: visible;
 }
 
 @keyframes float {
@@ -78,6 +83,7 @@ body::before {
 .form-container {
     display: none;
     transform: translateZ(30px);
+    min-height: auto;
 }
 
 .form-container.active {
@@ -108,6 +114,7 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-height: auto;
 }
 
 .input-group {
@@ -184,6 +191,7 @@ h2 {
     text-align: center;
     margin-top: 25px;
     color: rgba(255, 255, 255, 0.7);
+    padding-bottom: 10px;
 }
 
 .switch-link {
@@ -209,50 +217,38 @@ h2 {
     width: 100%;
 }
 
-/* Анимация переключения форм */
-.form-container:target {
-    display: block;
-    animation: slideIn 0.5s ease-out;
+/* Стили для переключателя форм входа */
+.login-switcher {
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 25px;
+    backdrop-filter: blur(10px);
 }
 
-.form-container:target ~ .form-container:not(:target) {
-    display: none;
+.switch-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
 }
 
-/* Адаптивность */
-@media (max-width: 480px) {
-    .glass-card {
-        padding: 30px 20px;
-        margin: 10px;
-    }
-    
-    .logo h1 {
-        font-size: 2em;
-    }
-    
-    h2 {
-        font-size: 1.5em;
-    }
+.switch-btn.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Эффект частиц для дополнительного визуального интереса */
-.glass-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-    animation: sparkle 20s linear infinite;
-    pointer-events: none;
-    z-index: -1;
-}
-
-@keyframes sparkle {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    100% { transform: translate(-20px, -20px) rotate(360deg); }
+.switch-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* Стили для формы подтверждения */
@@ -261,11 +257,7 @@ h2 {
     color: white;
     max-width: 400px;
     margin: 0 auto;
-}
-
-.verify-message p {
-    margin-bottom: 15px;
-    line-height: 1.5;
+    min-height: auto;
 }
 
 .email-icon {
@@ -302,6 +294,8 @@ h2 {
     border-radius: 12px;
     margin-top: 20px;
     text-align: left;
+    max-height: none;
+    overflow-y: visible;
 }
 
 .email-tips h4 {
@@ -370,94 +364,6 @@ h2 {
     color: #ffcdd2;
 }
 
-/* Анимация появления */
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Адаптивность для мобильных */
-@media (max-width: 480px) {
-    .verification-actions {
-        gap: 8px;
-    }
-    
-    .email-tips {
-        padding: 12px;
-    }
-    
-    .email-icon {
-        font-size: 2.5em;
-    }
-}
-
-/* Стили для переключателя форм входа */
-.login-switcher {
-    display: flex;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 4px;
-    margin-bottom: 25px;
-    backdrop-filter: blur(10px);
-}
-
-.switch-btn {
-    flex: 1;
-    padding: 12px 16px;
-    border: none;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.7);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.switch-btn.active {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.switch-btn:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.9);
-}
-
-/* Адаптивность для переключателя */
-@media (max-width: 480px) {
-    .login-switcher {
-        flex-direction: column;
-        gap: 4px;
-    }
-    
-    .switch-btn {
-        padding: 10px;
-    }
-}
-
-/* Дополнительные стили для форм */
-.form-container {
-    transition: all 0.3s ease;
-}
-
-.status-verified {
-    color: #4CAF50;
-    font-weight: 600;
-}
-
-.status-pending {
-    color: #FF9800;
-    font-weight: 600;
-}
-
 /* Стили для аватара пользователя */
 .user-avatar {
     position: fixed;
@@ -506,6 +412,8 @@ h2 {
     z-index: 1000;
     display: none;
     animation: slideDown 0.3s ease;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
 }
 
 @keyframes slideDown {
@@ -578,6 +486,7 @@ h2 {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    min-height: auto;
 }
 
 .profile-header {
@@ -634,11 +543,12 @@ h2 {
     border-radius: 15px;
     padding: 30px;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 30px;
 }
 
 .info-item {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     margin-bottom: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -675,252 +585,10 @@ h2 {
     gap: 15px;
     justify-content: center;
     margin-top: 30px;
-}
-
-.btn-secondary {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 12px 25px;
-    border-radius: 12px;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-}
-
-.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    margin-bottom: 20px;
 }
 
 /* Адаптивность */
-@media (max-width: 768px) {
-    .user-avatar {
-        width: 45px;
-        height: 45px;
-        font-size: 16px;
-        top: 15px;
-        right: 15px;
-    }
-    
-    .user-menu {
-        top: 70px;
-        right: 15px;
-        min-width: 180px;
-    }
-    
-    .profile-stats {
-        grid-template-columns: 1fr;
-    }
-    
-    .dashboard-actions {
-        flex-direction: column;
-    }
-    
-    .info-item {
-        flex-direction: column;
-    }
-    
-    .info-label {
-        width: 100%;
-        margin-bottom: 5px;
-    }
-}
-
-/* Оверлей для закрытия меню */
-.menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    z-index: 999;
-    display: none;
-}
-
-.menu-overlay.active {
-    display: block;
-}
-
-
-/* Основные стили для body и контейнеров */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-start; /* Изменено с center на flex-start */
-    justify-content: center;
-    padding: 20px;
-    position: relative;
-    overflow-x: hidden;
-    overflow-y: auto; /* Добавлена вертикальная прокрутка */
-}
-
-/* Эффект размытого фона */
-body::before {
-    content: '';
-    position: fixed; /* Изменено с absolute на fixed */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('glass-background.jpg') center/cover no-repeat;
-    filter: blur(10px) brightness(0.8);
-    z-index: -1;
-}
-
-.container {
-    width: 100%;
-    max-width: 400px;
-    perspective: 1000px;
-    margin: 80px auto 40px; /* Добавлены отступы сверху и снизу */
-    min-height: auto; /* Убрана фиксированная высота */
-}
-
-.glass-card {
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 20px;
-    padding: 40px 30px;
-    box-shadow: 
-        0 8px 32px 0 rgba(31, 38, 135, 0.37),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
-    transform-style: preserve-3d;
-    animation: float 6s ease-in-out infinite;
-    min-height: auto; /* Убрана фиксированная высота */
-    overflow: visible; /* Разрешаем контенту выходить за пределы */
-}
-
-/* Стили для аватара пользователя */
-.user-avatar {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    z-index: 1000;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* Меню пользователя */
-.user-menu {
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 15px;
-    padding: 15px;
-    min-width: 200px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    z-index: 1000;
-    display: none;
-    animation: slideDown 0.3s ease;
-    max-height: calc(100vh - 100px); /* Ограничение по высоте */
-    overflow-y: auto; /* Прокрутка если меню слишком большое */
-}
-
-/* Страница личного кабинета - обновленные стили */
-.dashboard-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    min-height: auto; /* Убрана фиксированная высота */
-}
-
-.profile-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.profile-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 40px;
-}
-
-.profile-info {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    margin-bottom: 30px;
-}
-
-.dashboard-actions {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 30px;
-    margin-bottom: 20px; /* Добавлен отступ снизу */
-}
-
-/* Стили для форм с большим количеством контента */
-.form-container {
-    display: none;
-    transform: translateZ(30px);
-    min-height: auto; /* Убрана фиксированная высота */
-}
-
-.form-container.active {
-    display: block;
-    animation: slideIn 0.5s ease-out;
-}
-
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    min-height: auto; /* Убрана фиксированная высота */
-}
-
-/* Стили для страницы подтверждения email */
-.verify-message {
-    text-align: center;
-    color: white;
-    max-width: 400px;
-    margin: 0 auto;
-    min-height: auto; /* Убрана фиксированная высота */
-}
-
-.email-tips {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
-    border-radius: 12px;
-    margin-top: 20px;
-    text-align: left;
-    max-height: none; /* Убрано ограничение высоты */
-    overflow-y: visible; /* Убрана прокрутка */
-}
-
-.verification-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 25px 0;
-}
-
-/* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
     body {
         padding: 15px;
@@ -971,9 +639,17 @@ body::before {
         gap: 10px;
     }
     
-    /* Улучшенная прокрутка на мобильных */
     .glass-card {
-        -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .login-switcher {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .switch-btn {
+        padding: 10px;
     }
 }
 
@@ -1013,26 +689,7 @@ body::before {
     }
 }
 
-/* Стили для высоких экранов */
-@media (min-height: 800px) {
-    .container {
-        margin: 100px auto 50px;
-    }
-}
-
-@media (min-height: 1000px) {
-    .container {
-        margin: 120px auto 60px;
-    }
-}
-
-/* Улучшения для прокрутки */
-.scrollable-content {
-    overflow-y: auto;
-    max-height: calc(100vh - 200px);
-}
-
-/* Кастомный скроллбар для Webkit браузеров */
+/* Кастомный скроллбар */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -1051,59 +708,7 @@ body::before {
     background: rgba(255, 255, 255, 0.5);
 }
 
-/* Для Firefox */
 * {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
-}
-
-/* Анимации */
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotateX(0deg); }
-    50% { transform: translateY(-10px) rotateX(2deg); }
-}
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateZ(30px) translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateZ(30px) translateY(0);
-    }
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Убедимся, что все контейнеры не ограничивают высоту */
-.logo {
-    text-align: center;
-    margin-bottom: 30px;
-    transform: translateZ(20px);
-}
-
-.switch-form {
-    text-align: center;
-    margin-top: 25px;
-    color: rgba(255, 255, 255, 0.7);
-    padding-bottom: 10px; /* Добавлен отступ для лучшей прокрутки */
-}
-
-.login-switcher {
-    display: flex;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 4px;
-    margin-bottom: 25px;
-    backdrop-filter: blur(10px);
 }
