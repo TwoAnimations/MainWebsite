@@ -396,3 +396,64 @@ h2 {
         font-size: 2.5em;
     }
 }
+
+/* Стили для переключателя форм входа */
+.login-switcher {
+    display: flex;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 25px;
+    backdrop-filter: blur(10px);
+}
+
+.switch-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.switch-btn.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.switch-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Адаптивность для переключателя */
+@media (max-width: 480px) {
+    .login-switcher {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .switch-btn {
+        padding: 10px;
+    }
+}
+
+/* Дополнительные стили для форм */
+.form-container {
+    transition: all 0.3s ease;
+}
+
+.status-verified {
+    color: #4CAF50;
+    font-weight: 600;
+}
+
+.status-pending {
+    color: #FF9800;
+    font-weight: 600;
+}
