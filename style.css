@@ -1,258 +1,208 @@
-/* Подключаем красивый шрифт */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-
-/* Сбрасываем стандартные отступы и задаем базовые стили */
+/* Сбрасываем стандартные отступы и задаем фоновый градиент для всей страницы */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    font-family: 'Montserrat', sans-serif;
+    /* Создаем красивый градиентный фон */
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    /* Анимируем градиент фон */
+    animation: gradient 15s ease infinite;
+    height: 100vh;
+    /* Центрируем форму с помощью Flexbox */
     display: flex;
-    align-items: center;
     justify-content: center;
-    flex-direction: column;
-    min-height: 100vh;
-    background-size: cover;
-    background-position: center;
-    /* Если вы добавили фоновое изображение, раскомментируйте строку ниже */
-    /* background: url('assets/background.jpg') no-repeat center center fixed; */
+    align-items: center;
 }
 
-/* Главный контейнер */
-.container {
-    background-color: rgba(255, 255, 255, 0.2); /* Полупрозрачный белый фон */
-    border-radius: 20px;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-    position: relative;
-    overflow: hidden;
-    width: 768px;
-    max-width: 100%;
-    min-height: 480px;
-    backdrop-filter: blur(10px); /* Размытие фона позади контейнера - ключевой эффект стекла! */
-    -webkit-backdrop-filter: blur(10px); /* Для поддержки в Safari */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Тонкая белая рамка для усиления эффекта */
+/* Анимация для плавного движения градиента */
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-/* Контейнеры форм */
+/* Стили для основного контейнера формы */
 .form-container {
+    width: 400px;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* Эффект "Жидкого Стекла" (Glassmorphism) */
+.form-container::before {
+    content: '';
     position: absolute;
     top: 0;
-    height: 100%;
-    transition: all 0.6s ease-in-out;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Полупрозрачный белый фон с размытием */
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    /* Тонкая белая рамка для усиления эффекта стекла */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    z-index: -1;
 }
 
-/* Контейнер для входа - изначально слева */
-.sign-in-container {
-    left: 0;
-    width: 50%;
-    z-index: 2;
+/* Стили для блока с вкладками */
+.tabs {
+    display: flex;
+    position: relative;
+    background: rgba(0, 0, 0, 0.1);
 }
 
-/* Контейнер для регистрации - изначально справа и НЕВИДИМ */
-.sign-up-container {
-    left: 0;
-    width: 50%;
-    opacity: 0;
+/* Скрываем настоящие радио-кнопки */
+.tabs input[type="radio"] {
+    display: none;
+}
+
+/* Стили для меток-вкладок */
+.tab-label {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+    transition: all 0.3s ease;
     z-index: 1;
 }
 
-/* Стили для самих форм */
-form {
-    background-color: rgba(255, 255, 255, 0.9); /* Почти непрозрачный белый для читаемости */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 50px;
-    height: 100%;
-    text-align: center;
+/* Эффект при наведении на вкладку */
+.tab-label:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
 }
 
-h1 {
-    font-weight: 700;
-    margin: 10px 0;
+/* Стили для активной вкладки (когда соответствующая радио-кнопка выбрана) */
+#login-tab:checked ~ .tabs .tab-label[for="login-tab"],
+#register-tab:checked ~ .tabs .tab-label[for="register-tab"] {
     color: #333;
 }
 
-.social-container {
-    margin: 20px 0;
+/* Подсветка под активной вкладкой */
+.tabs::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    height: 3px;
+    background: white;
+    transition: transform 0.3s ease;
 }
 
-.social-container a {
-    border: 1px solid #dddddd;
-    border-radius: 50%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 5px;
-    height: 40px;
-    width: 40px;
-    transition: all 0.3s ease;
+/* Сдвигаем подсветку вправо при выборе регистрации */
+#register-tab:checked ~ .tabs::after {
+    transform: translateX(100%);
 }
 
-.social-container a:hover {
-    transform: scale(1.1);
-    border-color: #667eea;
+/* Обертка для форм. Ширина 200%, т.к. содержит 2 формы по 100% ширины */
+.forms-wrapper {
+    display: flex;
+    width: 200%;
+    transition: transform 0.5s ease-in-out;
 }
 
-.social-container img {
-    width: 20px;
-    height: 20px;
+/* Сдвигаем обертку, чтобы показать форму регистрации */
+#register-tab:checked ~ .forms-wrapper {
+    transform: translateX(-50%);
 }
 
-span {
-    font-size: 12px;
-    color: #555;
-    margin-bottom: 15px;
+/* Стили для каждой отдельной формы */
+.form {
+    width: 50%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Стили для полей ввода */
-input {
-    background-color: #f0f0f0;
-    border: none;
-    padding: 12px 15px;
-    margin: 8px 0;
+.form h2 {
+    color: white;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Стили для группы полей ввода */
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-group input {
     width: 100%;
-    border-radius: 8px;
+    padding: 10px 0;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     outline: none;
+    background: transparent;
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus {
+    border-bottom-color: white;
+}
+
+/* Стили для плавающих label */
+.input-group label {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
     transition: all 0.3s ease;
 }
 
-input:focus {
-    background-color: #e0e0e0;
-    box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+/* Эффект поднятия label при фокусе или если поле заполнено */
+.input-group input:focus ~ label,
+.input-group input:valid ~ label {
+    top: -15px;
+    font-size: 12px;
+    color: white;
 }
 
-/* Стили для кнопок */
-button {
-    border-radius: 8px;
-    border: 1px solid #667eea;
-    background-color: #667eea;
-    color: #ffffff;
-    font-size: 12px;
+/* Стили для кнопки отправки формы */
+.submit-btn {
+    padding: 12px;
+    border: none;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 16px;
     font-weight: 600;
-    padding: 12px 45px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: transform 80ms ease-in, background-color 0.3s ease;
     cursor: pointer;
+    transition: all 0.3s ease;
     margin-top: 10px;
 }
 
-button:active {
-    transform: scale(0.95);
+.submit-btn:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-button:focus {
-    outline: none;
-}
-
-button:hover {
-    background-color: #5a6fd8;
-}
-
-button.ghost {
-    background-color: transparent;
-    border-color: #ffffff;
-    color: #fff;
-}
-
-button.ghost:hover {
-    background-color: #fff;
-    color: #333;
-}
-
-a {
-    color: #333;
-    font-size: 12px;
-    text-decoration: none;
-    margin: 15px 0;
-    transition: color 0.3s ease;
-}
-
-a:hover {
-    color: #667eea;
-}
-
-/* Стили для панели перекрытия */
-.overlay-container {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: transform 0.6s ease-in-out;
-    z-index: 100;
-}
-
-.overlay {
-    background: linear-gradient(to right, #667eea, #764ba2);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 0 0;
-    color: #ffffff;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-}
-
-.overlay-panel {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 40px;
+/* Стили для ссылок (например, "Забыли пароль?") */
+.link {
+    color: rgba(255, 255, 255, 0.8);
     text-align: center;
-    top: 0;
-    height: 100%;
-    width: 50%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
+    margin-top: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
 }
 
-.overlay-right {
-    right: 0;
-    transform: translateX(0);
-}
-
-.overlay-left {
-    transform: translateX(-20%);
-}
-
-/* Магия переключения с помощью :target */
-
-/* Когда контейнер является целью (url имеет #signUp) */
-.container#signUp .sign-in-container {
-    transform: translateX(100%);
-}
-
-.container#signUp .sign-up-container {
-    transform: translateX(100%);
-    opacity: 1;
-    z-index: 5;
-}
-
-.container#signUp .overlay-container {
-    transform: translateX(-100%);
-}
-
-.container#signUp .overlay {
-    transform: translateX(50%);
-}
-
-.container#signUp .overlay-left {
-    transform: translateX(0);
-}
-
-.container#signUp .overlay-right {
-    transform: translateX(20%);
+.link:hover {
+    color: white;
+    text-decoration: underline;
 }
