@@ -25,17 +25,21 @@ function showForm(formId) {
     document.querySelectorAll('.form-container').forEach(form => {
         form.classList.remove('active');
     });
-    document.getElementById(formId).classList.add('active');
+    const targetForm = document.getElementById(formId);
+    if (targetForm) {
+        targetForm.classList.add('active');
+    }
     
-    // Обновляем активную кнопку переключателя
-    document.querySelectorAll('.switch-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    if (formId === 'login-email-form') {
-        document.querySelector('[data-form="login-email-form"]').classList.add('active');
-    } else if (formId === 'login-username-form') {
-        document.querySelector('[data-form="login-username-form"]').classList.add('active');
+    // Обновляем активную кнопку переключателя (только для index.html)
+    if (formId === 'login-email-form' || formId === 'login-username-form') {
+        document.querySelectorAll('.switch-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        const activeBtn = document.querySelector(`[data-form="${formId}"]`);
+        if (activeBtn) {
+            activeBtn.classList.add('active');
+        }
     }
 }
 
@@ -52,16 +56,20 @@ function showAlert(message, type = 'success') {
     alertDiv.textContent = message;
     
     const container = document.querySelector('.glass-card');
-    container.insertBefore(alertDiv, container.firstChild);
-    
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 5000);
+    if (container) {
+        container.insertBefore(alertDiv, container.firstChild);
+        
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
 }
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    // Обработчики форм входа
+    // Обработчики форм входа (только для index.html)
     const loginEmailForm = document.getElementById('loginEmailForm');
     const loginUsernameForm = document.getElementById('loginUsernameForm');
     
@@ -73,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loginUsernameForm.addEventListener('submit', handleLoginUsername);
     }
     
-    // Обработчики переключателя форм
+    // Обработчики переключателя форм (только для index.html)
     document.querySelectorAll('.switch-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const formId = this.getAttribute('data-form');
@@ -81,7 +89,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Обработчик повторной отправки подтверждения
+    // Обработчики для страницы регистрации
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegister);
+    }
+    
     const resendBtn = document.getElementById('resend-btn');
     if (resendBtn) {
         resendBtn.addEventListener('click', resendVerification);
@@ -250,15 +263,19 @@ async function handleLoginUsername(e) {
     }
 }
 
-// Обработка регистрации (для register.html)
+// Обработка регистрации
 async function handleRegister(e) {
     e.preventDefault();
+    console.log('Начало регистрации...');
     
     const name = document.getElementById('register-name').value;
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
     const confirmPassword = document.getElementById('register-confirm').value;
     
+    console.log('Данные формы:', { name, email, password, confirmPassword });
+    
+    // Валидация
     if (password !== confirmPassword) {
         showAlert('Пароли не совпадают!', 'error');
         return;
@@ -269,10 +286,8 @@ async function handleRegister(e) {
         return;
     }
     
-    // Проверяем уникальность username
-    const usernameExists = await checkUsernameExists(name.toLowerCase().trim());
-    if (usernameExists) {
-        showAlert('Такое имя пользователя уже занято', 'error');
+    if (!name || !email) {
+        showAlert('Пожалуйста, заполните все поля', 'error');
         return;
     }
     
@@ -281,10 +296,21 @@ async function handleRegister(e) {
         registerBtn.textContent = 'Создание аккаунта...';
         registerBtn.disabled = true;
 
+        console.log('Проверка уникальности username...');
+        // Проверяем уникальность username
+        const usernameExists = await checkUsernameExists(name.toLowerCase().trim());
+        if (usernameExists) {
+            showAlert('Такое имя пользователя уже занято', 'error');
+            return;
+        }
+
+        console.log('Создание пользователя в Firebase Auth...');
         // Создаем пользователя в Firebase Auth
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         currentUser = userCredential.user;
+        console.log('Пользователь создан:', currentUser.uid);
         
+        console.log('Сохранение данных в Firestore...');
         // Сохраняем дополнительную информацию в Firestore
         await db.collection('users').doc(currentUser.uid).set({
             username: name.toLowerCase().trim(),
@@ -293,13 +319,19 @@ async function handleRegister(e) {
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             emailVerified: false
         });
+        console.log('Данные сохранены в Firestore');
         
+        console.log('Отправка email подтверждения...');
         // Отправляем email для подтверждения
         await currentUser.sendEmailVerification();
+        console.log('Email подтверждения отправлен');
         
         // Показываем сообщение о подтверждении
         showForm('verify-form');
-        document.getElementById('user-email').textContent = email;
+        const userEmailElement = document.getElementById('user-email');
+        if (userEmailElement) {
+            userEmailElement.textContent = email;
+        }
         
         showAlert('Ссылка для подтверждения отправлена на ваш email! Проверьте почту.');
         
@@ -317,6 +349,9 @@ async function handleRegister(e) {
             case 'auth/weak-password':
                 errorMessage += 'Пароль слишком слабый';
                 break;
+            case 'auth/network-request-failed':
+                errorMessage += 'Ошибка сети. Проверьте подключение к интернету';
+                break;
             default:
                 errorMessage += error.message;
         }
@@ -333,11 +368,16 @@ async function handleRegister(e) {
 
 // Проверка уникальности username
 async function checkUsernameExists(username) {
-    const snapshot = await db.collection('users')
-        .where('username', '==', username)
-        .limit(1)
-        .get();
-    return !snapshot.empty;
+    try {
+        const snapshot = await db.collection('users')
+            .where('username', '==', username)
+            .limit(1)
+            .get();
+        return !snapshot.empty;
+    } catch (error) {
+        console.error('Ошибка проверки username:', error);
+        return false;
+    }
 }
 
 // Повторная отправка ссылки подтверждения
@@ -349,8 +389,10 @@ async function resendVerification() {
     
     try {
         const resendBtn = document.getElementById('resend-btn');
-        resendBtn.textContent = 'Отправка...';
-        resendBtn.disabled = true;
+        if (resendBtn) {
+            resendBtn.textContent = 'Отправка...';
+            resendBtn.disabled = true;
+        }
 
         await currentUser.sendEmailVerification();
         showAlert('Ссылка для подтверждения отправлена повторно! Проверьте вашу почту.');
@@ -378,10 +420,21 @@ function checkEmailVerification() {
                 showAlert('Email успешно подтвержден! Теперь вы можете войти в аккаунт.', 'success');
                 
                 // Обновляем статус в Firestore
-                await db.collection('users').doc(user.uid).update({
-                    emailVerified: true,
-                    emailVerifiedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                try {
+                    await db.collection('users').doc(user.uid).update({
+                        emailVerified: true,
+                        emailVerifiedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } catch (error) {
+                    console.error('Ошибка обновления статуса:', error);
+                }
+                
+                // Если мы на странице регистрации, перенаправляем на вход через 3 секунды
+                if (window.location.pathname.includes('register.html')) {
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                }
             }
         }
     });
