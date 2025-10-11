@@ -3,74 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TwoAnimations - Вход и Регистрация</title>
-    <!-- Подключаем наш файл стилей -->
-    <link rel="stylesheet" href="style.css">
+    <title>TwoAnimations - Вход и регистрация</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Основной контейнер, который центрирует форму на странице -->
     <div class="container">
-        <!-- Контейнер формы с эффектом стекла -->
-        <div class="form-container">
-            
-            <!-- Переключатели между Входом и Регистрацией -->
-            <div class="tabs">
-                <!-- Скрытый радио-инпут для входа. При его выборе будет показана форма входа -->
-                <input type="radio" id="login-tab" name="tabs" checked>
-                <label for="login-tab" class="tab-label">Вход</label>
-
-                <!-- Скрытый радио-инпут для регистрации. При его выборе будет показана форма регистрации -->
-                <input type="radio" id="register-tab" name="tabs">
-                <label for="register-tab" class="tab-label">Регистрация</label>
-            </div>
-
-            <!-- Обертка для форм, которая будет сдвигаться влево-вправо -->
-            <div class="forms-wrapper">
-                <!-- Форма Входа -->
-                <form action="#" class="form" id="login-form">
-                    <h2>Добро пожаловать!</h2>
-                    <!-- Поле для ввода логина или email -->
-                    <div class="input-group">
-                        <input type="text" required>
-                        <label for="login">Логин или Email</label>
-                    </div>
-                    <!-- Поле для ввода пароля -->
-                    <div class="input-group">
-                        <input type="password" required>
-                        <label for="password">Пароль</label>
-                    </div>
-                    <!-- Кнопка отправки формы -->
-                    <button type="submit" class="submit-btn">Войти</button>
-                    <!-- Ссылка "Забыли пароль?" -->
-                    <a href="#" class="link">Забыли пароль?</a>
-                </form>
-
-                <!-- Форма Регистрации -->
-                <form action="#" class="form" id="register-form">
-                    <h2>Создать аккаунт</h2>
-                    <!-- Поле для ввода имени пользователя -->
-                    <div class="input-group">
-                        <input type="text" required>
-                        <label for="username">Имя пользователя</label>
-                    </div>
-                    <!-- Поле для ввода email -->
-                    <div class="input-group">
-                        <input type="email" required>
-                        <label for="email">Email</label>
-                    </div>
-                    <!-- Поле для ввода пароля -->
-                    <div class="input-group">
-                        <input type="password" required>
-                        <label for="password">Пароль</label>
-                    </div>
-                    <!-- Поле для подтверждения пароля -->
-                    <div class="input-group">
-                        <input type="password" required>
-                        <label for="confirm-password">Повторите пароль</label>
-                    </div>
-                    <!-- Кнопка отправки формы -->
-                    <button type="submit" class="submit-btn">Зарегистрироваться</button>
-                </form>
+        <!-- Форма входа -->
+        <div class="form-container sign-in-container">
+            <form class="form" action="#" method="post">
+                <h1>Вход в TwoAnimations</h1>
+                <div class="input-group">
+                    <input type="email" id="signin-email" required>
+                    <label for="signin-email">Email</label>
+                    <div class="underline"></div>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="signin-password" required>
+                    <label for="signin-password">Пароль</label>
+                    <div class="underline"></div>
+                </div>
+                <a href="#" class="forgot-password">Забыли пароль?</a>
+                <button type="submit" class="btn">Войти</button>
+            </form>
+        </div>
+        
+        <!-- Форма регистрации -->
+        <div class="form-container sign-up-container">
+            <form class="form" action="#" method="post">
+                <h1>Регистрация в TwoAnimations</h1>
+                <div class="input-group">
+                    <input type="text" id="signup-username" required>
+                    <label for="signup-username">Имя пользователя</label>
+                    <div class="underline"></div>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="signup-email" required>
+                    <label for="signup-email">Email</label>
+                    <div class="underline"></div>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="signup-password" required>
+                    <label for="signup-password">Пароль</label>
+                    <div class="underline"></div>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="signup-confirm-password" required>
+                    <label for="signup-confirm-password">Подтвердите пароль</label>
+                    <div class="underline"></div>
+                </div>
+                <button type="submit" class="btn">Зарегистрироваться</button>
+            </form>
+        </div>
+        
+        <!-- Переключатель между формами -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Уже есть аккаунт?</h1>
+                    <p>Войдите, чтобы продолжить работу с TwoAnimations</p>
+                    <button class="btn ghost" id="signIn">Войти</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Нет аккаунта?</h1>
+                    <p>Зарегистрируйтесь, чтобы присоединиться к сообществу TwoAnimations</p>
+                    <button class="btn ghost" id="signUp">Регистрация</button>
+                </div>
             </div>
         </div>
     </div>
