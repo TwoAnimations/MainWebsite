@@ -1,4 +1,4 @@
-// Функции для работы с личным кабинетом
+// dashboard.js
 class UserDashboard {
     constructor() {
         this.user = null;
@@ -26,10 +26,10 @@ class UserDashboard {
                     await this.loadUserProfile();
                     resolve(true);
                 } else {
-                    // Если пользователь не авторизован, перенаправляем на вход
-                    // Но только если мы еще не на странице входа
                     if (!window.location.pathname.includes('index.html')) {
-                        window.location.href = 'index.html';
+                        setTimeout(() => {
+                            safeRedirect('index.html');
+                        }, 1000);
                     }
                     resolve(false);
                 }
@@ -37,7 +37,6 @@ class UserDashboard {
         });
     }
 
-    // Остальные методы остаются без изменений...
     async loadUserProfile() {
         try {
             const userDoc = await db.collection('users').doc(this.user.uid).get();
@@ -51,22 +50,17 @@ class UserDashboard {
     }
 
     updateDashboard() {
-        // Обновляем аватар
         this.updateAvatar();
         
-        // Обновляем информацию на странице
         if (this.userData) {
-            // Основная информация
             document.getElementById('profile-username').textContent = this.userData.displayName || this.userData.username || 'Пользователь';
             document.getElementById('profile-email').textContent = this.user.email;
             
-            // Детальная информация
             document.getElementById('info-username').textContent = this.userData.displayName || this.userData.username || '-';
             document.getElementById('info-email').textContent = this.user.email;
             document.getElementById('info-userid').textContent = this.user.uid;
             document.getElementById('info-last-login').textContent = new Date().toLocaleString('ru-RU');
             
-            // Статус email
             const emailStatus = document.getElementById('info-email-status');
             if (this.user.emailVerified) {
                 emailStatus.textContent = '✓ Подтвержден';
@@ -76,17 +70,14 @@ class UserDashboard {
                 emailStatus.className = 'status-pending';
             }
             
-            // Дата регистрации
             if (this.userData.createdAt) {
                 const joinDate = this.userData.createdAt.toDate();
                 document.getElementById('info-joined').textContent = joinDate.toLocaleDateString('ru-RU');
                 
-                // Расчет дней с регистрации
                 const daysSinceJoin = Math.floor((new Date() - joinDate) / (1000 * 60 * 60 * 24));
                 document.getElementById('stat-joined').textContent = daysSinceJoin;
             }
             
-            // Заглушки для статистики
             document.getElementById('stat-projects').textContent = '0';
             document.getElementById('stat-activity').textContent = '100%';
             document.getElementById('stat-level').textContent = '1';
@@ -97,13 +88,11 @@ class UserDashboard {
         const username = this.userData?.displayName || this.userData?.username || 'User';
         const initials = this.getInitials(username);
         
-        // Обновляем большой аватар на странице
         const largeAvatar = document.getElementById('profile-avatar-large');
         if (largeAvatar) {
             largeAvatar.textContent = initials;
         }
         
-        // Обновляем аватар в углу
         const cornerAvatar = document.querySelector('.user-avatar');
         if (cornerAvatar) {
             cornerAvatar.textContent = initials;
@@ -118,7 +107,6 @@ class UserDashboard {
     }
 
     createUserAvatar() {
-        // Создаем аватар в правом верхнем углу
         const avatar = document.createElement('div');
         avatar.className = 'user-avatar';
         avatar.innerHTML = this.getInitials(this.userData?.displayName || 'UA');
@@ -128,11 +116,8 @@ class UserDashboard {
         };
         
         document.body.appendChild(avatar);
-        
-        // Создаем меню пользователя
         this.createUserMenu();
         
-        // Закрытие меню при клике вне его
         document.addEventListener('click', () => {
             this.hideUserMenu();
         });
@@ -162,7 +147,6 @@ class UserDashboard {
         document.body.appendChild(menu);
         this.userMenu = menu;
         
-        // Предотвращаем закрытие при клике на меню
         menu.addEventListener('click', (e) => {
             e.stopPropagation();
         });
@@ -185,7 +169,6 @@ class UserDashboard {
     }
 
     loadUserData() {
-        // Дополнительная загрузка данных пользователя
         console.log('Данные пользователя загружены:', this.userData);
     }
 }
@@ -195,18 +178,27 @@ function editProfile() {
     alert('Функция редактирования профиля в разработке');
 }
 
+function changePassword() {
+    alert('Функция смены пароля в разработке');
+}
+
 function logout() {
     if (confirm('Вы уверены, что хотите выйти?')) {
         auth.signOut().then(() => {
             localStorage.removeItem('userLoggedIn');
             localStorage.removeItem('userEmail');
             localStorage.removeItem('username');
-            window.location.href = 'index.html';
+            safeRedirect('index.html');
         });
     }
 }
 
-// Инициализация дашборда когда DOM загружен
+// Инициализация дашборда
 document.addEventListener('DOMContentLoaded', () => {
     new UserDashboard();
+});
+
+// Адаптация высоты
+window.addEventListener('load', function() {
+    setTimeout(adjustContentHeight, 100);
 });
