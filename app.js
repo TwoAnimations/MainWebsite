@@ -26,10 +26,27 @@ function showForm(formId) {
         form.classList.remove('active');
     });
     document.getElementById(formId).classList.add('active');
+    
+    // Обновляем активную кнопку переключателя
+    document.querySelectorAll('.switch-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    if (formId === 'login-email-form') {
+        document.querySelector('[data-form="login-email-form"]').classList.add('active');
+    } else if (formId === 'login-username-form') {
+        document.querySelector('[data-form="login-username-form"]').classList.add('active');
+    }
 }
 
 // Показ уведомлений
 function showAlert(message, type = 'success') {
+    // Удаляем существующие уведомления
+    const existingAlert = document.querySelector('.alert');
+    if (existingAlert) {
+        existingAlert.remove();
+    }
+    
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type}`;
     alertDiv.textContent = message;
@@ -42,87 +59,52 @@ function showAlert(message, type = 'success') {
     }, 5000);
 }
 
-// Регистрация
+// Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    const registerForm = document.getElementById('registerForm');
-    const loginForm = document.getElementById('loginForm');
+    // Обработчики форм входа
+    const loginEmailForm = document.getElementById('loginEmailForm');
+    const loginUsernameForm = document.getElementById('loginUsernameForm');
     
-    if (registerForm) {
-        registerForm.addEventListener('submit', handleRegister);
+    if (loginEmailForm) {
+        loginEmailForm.addEventListener('submit', handleLoginEmail);
     }
     
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
+    if (loginUsernameForm) {
+        loginUsernameForm.addEventListener('submit', handleLoginUsername);
+    }
+    
+    // Обработчики переключателя форм
+    document.querySelectorAll('.switch-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const formId = this.getAttribute('data-form');
+            showForm(formId);
+        });
+    });
+    
+    // Обработчик повторной отправки подтверждения
+    const resendBtn = document.getElementById('resend-btn');
+    if (resendBtn) {
+        resendBtn.addEventListener('click', resendVerification);
     }
     
     // Проверяем, есть ли параметр подтверждения email в URL
     checkEmailVerification();
+    
+    // Проверяем авторизацию
+    checkAuth();
 });
 
-// Обработка регистрации
-async function handleRegister(e) {
-    e.preventDefault();
-    
-    const name = document.getElementById('register-name').value;
-    const email = document.getElementById('register-email').value;
-    const password = document.getElementById('register-password').value;
-    const confirmPassword = document.getElementById('register-confirm').value;
-    
-    if (password !== confirmPassword) {
-        showAlert('Пароли не совпадают!', 'error');
-        return;
-    }
-    
-    if (password.length < 6) {
-        showAlert('Пароль должен содержать минимум 6 символов!', 'error');
-        return;
-    }
-    
-    try {
-        const registerBtn = e.target.querySelector('.btn-primary');
-        registerBtn.textContent = 'Создание аккаунта...';
-        registerBtn.disabled = true;
-
-        // Создаем пользователя в Firebase Auth
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        currentUser = userCredential.user;
-        
-        // Сохраняем дополнительную информацию в Firestore
-        await db.collection('users').doc(currentUser.uid).set({
-            username: name,
-            email: email,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            emailVerified: false,
-            displayName: name
-        });
-        
-        // Отправляем email для подтверждения
-        await currentUser.sendEmailVerification();
-        
-        // Показываем сообщение о подтверждении
-        showForm('verify-form');
-        document.getElementById('user-email').textContent = email;
-        
-        showAlert('Ссылка для подтверждения отправлена на ваш email! Проверьте почту.');
-        
-    } catch (error) {
-        console.error('Ошибка регистрации:', error);
-        showAlert('Ошибка регистрации: ' + error.message, 'error');
-    } finally {
-        const registerBtn = document.querySelector('#registerForm .btn-primary');
-        if (registerBtn) {
-            registerBtn.textContent = 'Создать аккаунт';
-            registerBtn.disabled = false;
-        }
-    }
-}
-
-// Обработка входа
-async function handleLogin(e) {
+// Вход по Email
+async function handleLoginEmail(e) {
     e.preventDefault();
     
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
+    
+    if (!email || !password) {
+        showAlert('Пожалуйста, заполните все поля', 'error');
+        return;
+    }
     
     try {
         const loginBtn = e.target.querySelector('.btn-primary');
@@ -141,9 +123,16 @@ async function handleLogin(e) {
         // Успешный вход
         showAlert('Вход выполнен успешно!', 'success');
         
-        // Сохраняем информацию о пользователе в localStorage
+        // Сохраняем информацию о пользователе
         localStorage.setItem('userLoggedIn', 'true');
         localStorage.setItem('userEmail', user.email);
+        
+        // Получаем дополнительную информацию о пользователе
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (userDoc.exists) {
+            const userData = userDoc.data();
+            localStorage.setItem('username', userData.username || '');
+        }
         
         // Перенаправление на защищенную страницу
         setTimeout(() => {
@@ -152,14 +141,203 @@ async function handleLogin(e) {
         
     } catch (error) {
         console.error('Ошибка входа:', error);
-        showAlert('Ошибка входа: ' + error.message, 'error');
+        
+        let errorMessage = 'Ошибка входа: ';
+        switch (error.code) {
+            case 'auth/user-not-found':
+                errorMessage += 'Пользователь с таким email не найден';
+                break;
+            case 'auth/wrong-password':
+                errorMessage += 'Неверный пароль';
+                break;
+            case 'auth/invalid-email':
+                errorMessage += 'Неверный формат email';
+                break;
+            default:
+                errorMessage += error.message;
+        }
+        
+        showAlert(errorMessage, 'error');
     } finally {
-        const loginBtn = document.querySelector('#loginForm .btn-primary');
+        const loginBtn = document.querySelector('#loginEmailForm .btn-primary');
         if (loginBtn) {
             loginBtn.textContent = 'Войти';
             loginBtn.disabled = false;
         }
     }
+}
+
+// Вход по Имени пользователя
+async function handleLoginUsername(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password-username').value;
+    
+    if (!username || !password) {
+        showAlert('Пожалуйста, заполните все поля', 'error');
+        return;
+    }
+    
+    try {
+        const loginBtn = e.target.querySelector('.btn-primary');
+        loginBtn.textContent = 'Вход...';
+        loginBtn.disabled = true;
+
+        // Ищем пользователя по username в Firestore
+        const usersSnapshot = await db.collection('users')
+            .where('username', '==', username.toLowerCase().trim())
+            .limit(1)
+            .get();
+        
+        if (usersSnapshot.empty) {
+            showAlert('Пользователь с таким именем не найден', 'error');
+            return;
+        }
+        
+        const userDoc = usersSnapshot.docs[0];
+        const userData = userDoc.data();
+        const userEmail = userData.email;
+        
+        // Пытаемся войти с найденным email
+        const userCredential = await auth.signInWithEmailAndPassword(userEmail, password);
+        const user = userCredential.user;
+        
+        if (!user.emailVerified) {
+            showAlert('Пожалуйста, подтвердите ваш email перед входом. Проверьте вашу почту.', 'error');
+            await auth.signOut();
+            return;
+        }
+        
+        // Успешный вход
+        showAlert('Вход выполнен успешно!', 'success');
+        
+        // Сохраняем информацию о пользователе
+        localStorage.setItem('userLoggedIn', 'true');
+        localStorage.setItem('userEmail', user.email);
+        localStorage.setItem('username', username);
+        
+        // Перенаправление на защищенную страницу
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 1500);
+        
+    } catch (error) {
+        console.error('Ошибка входа:', error);
+        
+        let errorMessage = 'Ошибка входа: ';
+        switch (error.code) {
+            case 'auth/user-not-found':
+                errorMessage += 'Пользователь не найден';
+                break;
+            case 'auth/wrong-password':
+                errorMessage += 'Неверный пароль';
+                break;
+            case 'auth/invalid-email':
+                errorMessage += 'Ошибка в данных пользователя';
+                break;
+            default:
+                errorMessage += error.message;
+        }
+        
+        showAlert(errorMessage, 'error');
+    } finally {
+        const loginBtn = document.querySelector('#loginUsernameForm .btn-primary');
+        if (loginBtn) {
+            loginBtn.textContent = 'Войти';
+            loginBtn.disabled = false;
+        }
+    }
+}
+
+// Обработка регистрации (для register.html)
+async function handleRegister(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('register-name').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const confirmPassword = document.getElementById('register-confirm').value;
+    
+    if (password !== confirmPassword) {
+        showAlert('Пароли не совпадают!', 'error');
+        return;
+    }
+    
+    if (password.length < 6) {
+        showAlert('Пароль должен содержать минимум 6 символов!', 'error');
+        return;
+    }
+    
+    // Проверяем уникальность username
+    const usernameExists = await checkUsernameExists(name.toLowerCase().trim());
+    if (usernameExists) {
+        showAlert('Такое имя пользователя уже занято', 'error');
+        return;
+    }
+    
+    try {
+        const registerBtn = e.target.querySelector('.btn-primary');
+        registerBtn.textContent = 'Создание аккаунта...';
+        registerBtn.disabled = true;
+
+        // Создаем пользователя в Firebase Auth
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        currentUser = userCredential.user;
+        
+        // Сохраняем дополнительную информацию в Firestore
+        await db.collection('users').doc(currentUser.uid).set({
+            username: name.toLowerCase().trim(),
+            email: email,
+            displayName: name,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            emailVerified: false
+        });
+        
+        // Отправляем email для подтверждения
+        await currentUser.sendEmailVerification();
+        
+        // Показываем сообщение о подтверждении
+        showForm('verify-form');
+        document.getElementById('user-email').textContent = email;
+        
+        showAlert('Ссылка для подтверждения отправлена на ваш email! Проверьте почту.');
+        
+    } catch (error) {
+        console.error('Ошибка регистрации:', error);
+        
+        let errorMessage = 'Ошибка регистрации: ';
+        switch (error.code) {
+            case 'auth/email-already-in-use':
+                errorMessage += 'Email уже используется';
+                break;
+            case 'auth/invalid-email':
+                errorMessage += 'Неверный формат email';
+                break;
+            case 'auth/weak-password':
+                errorMessage += 'Пароль слишком слабый';
+                break;
+            default:
+                errorMessage += error.message;
+        }
+        
+        showAlert(errorMessage, 'error');
+    } finally {
+        const registerBtn = document.querySelector('#registerForm .btn-primary');
+        if (registerBtn) {
+            registerBtn.textContent = 'Создать аккаунт';
+            registerBtn.disabled = false;
+        }
+    }
+}
+
+// Проверка уникальности username
+async function checkUsernameExists(username) {
+    const snapshot = await db.collection('users')
+        .where('username', '==', username)
+        .limit(1)
+        .get();
+    return !snapshot.empty;
 }
 
 // Повторная отправка ссылки подтверждения
@@ -204,13 +382,19 @@ function checkEmailVerification() {
                     emailVerified: true,
                     emailVerifiedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                
-                // Если мы на странице регистрации, перенаправляем на вход
-                if (window.location.pathname.includes('register.html')) {
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 3000);
-                }
+            }
+        }
+    });
+}
+
+// Проверка авторизации
+function checkAuth() {
+    auth.onAuthStateChanged((user) => {
+        if (user && user.emailVerified) {
+            // Если пользователь уже авторизован, перенаправляем на dashboard
+            if (window.location.pathname.includes('index.html') || 
+                window.location.pathname.endsWith('/')) {
+                window.location.href = 'dashboard.html';
             }
         }
     });
@@ -221,19 +405,7 @@ function logout() {
     auth.signOut().then(() => {
         localStorage.removeItem('userLoggedIn');
         localStorage.removeItem('userEmail');
+        localStorage.removeItem('username');
         window.location.href = 'index.html';
     });
 }
-
-// Проверка авторизации при загрузке страницы
-function checkAuth() {
-    auth.onAuthStateChanged((user) => {
-        if (user && user.emailVerified) {
-            // Пользователь авторизован и email подтвержден
-            console.log('Пользователь авторизован:', user.email);
-        }
-    });
-}
-
-// Инициализация проверки авторизации
-checkAuth();
