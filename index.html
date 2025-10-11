@@ -3,65 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TwoAnimations | Вход и Регистрация</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>TwoAnimations - Вход и Регистрация</title>
+    <!-- Подключаем наш файл стилей -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Основной контейнер -->
-    <div class="container" id="container">
-        
-        <!-- Форма регистрации -->
-        <div class="form-container sign-up-container">
-            <form action="#">
-                <h1>Создать аккаунт</h1>
-                <div class="social-container">
-                    <a href="#" class="social"><img src="assets/github.svg" alt="Github"></a>
-                    <a href="#" class="social"><img src="assets/twitter.svg" alt="Twitter"></a>
-                    <a href="#" class="social"><img src="assets/linkedin.svg" alt="LinkedIn"></a>
-                </div>
-                <span>или используйте email для регистрации</span>
-                <input type="text" placeholder="Имя" required />
-                <input type="email" placeholder="Email" required />
-                <input type="password" placeholder="Пароль" required />
-                <button type="submit">Зарегистрироваться</button>
-            </form>
-        </div>
+    <!-- Основной контейнер, который центрирует форму на странице -->
+    <div class="container">
+        <!-- Контейнер формы с эффектом стекла -->
+        <div class="form-container">
+            
+            <!-- Переключатели между Входом и Регистрацией -->
+            <div class="tabs">
+                <!-- Скрытый радио-инпут для входа. При его выборе будет показана форма входа -->
+                <input type="radio" id="login-tab" name="tabs" checked>
+                <label for="login-tab" class="tab-label">Вход</label>
 
-        <!-- Форма входа -->
-        <div class="form-container sign-in-container">
-            <form action="#">
-                <h1>Войти</h1>
-                <div class="social-container">
-                    <a href="#" class="social"><img src="assets/github.svg" alt="Github"></a>
-                    <a href="#" class="social"><img src="assets/twitter.svg" alt="Twitter"></a>
-                    <a href="#" class="social"><img src="assets/linkedin.svg" alt="LinkedIn"></a>
-                </div>
-                <span>или используйте свой аккаунт</span>
-                <input type="email" placeholder="Email" required />
-                <input type="password" placeholder="Пароль" required />
-                <a href="#">Забыли пароль?</a>
-                <button type="submit">Войти</button>
-            </form>
-        </div>
+                <!-- Скрытый радио-инпут для регистрации. При его выборе будет показана форма регистрации -->
+                <input type="radio" id="register-tab" name="tabs">
+                <label for="register-tab" class="tab-label">Регистрация</label>
+            </div>
 
-        <!-- Панель перекрытия -->
-        <div class="overlay-container">
-            <div class="overlay">
-                <!-- Левая панель перекрытия (активна при входе) -->
-                <div class="overlay-panel overlay-left">
-                    <h1>С возвращением!</h1>
-                    <p>Чтобы оставаться на связи с нами, пожалуйста, войдите под своими данными</p>
-                    <button class="ghost" id="signIn">Войти</button>
-                </div>
-                <!-- Правая панель перекрытия (активна при регистрации) -->
-                <div class="overlay-panel overlay-right">
-                    <h1>Привет, друг!</h1>
-                    <p>Введите свои личные данные и начните путешествие с нами</p>
-                    <button class="ghost" id="signUp">Зарегистрироваться</button>
-                </div>
+            <!-- Обертка для форм, которая будет сдвигаться влево-вправо -->
+            <div class="forms-wrapper">
+                <!-- Форма Входа -->
+                <form action="#" class="form" id="login-form">
+                    <h2>Добро пожаловать!</h2>
+                    <!-- Поле для ввода логина или email -->
+                    <div class="input-group">
+                        <input type="text" required>
+                        <label for="login">Логин или Email</label>
+                    </div>
+                    <!-- Поле для ввода пароля -->
+                    <div class="input-group">
+                        <input type="password" required>
+                        <label for="password">Пароль</label>
+                    </div>
+                    <!-- Кнопка отправки формы -->
+                    <button type="submit" class="submit-btn">Войти</button>
+                    <!-- Ссылка "Забыли пароль?" -->
+                    <a href="#" class="link">Забыли пароль?</a>
+                </form>
+
+                <!-- Форма Регистрации -->
+                <form action="#" class="form" id="register-form">
+                    <h2>Создать аккаунт</h2>
+                    <!-- Поле для ввода имени пользователя -->
+                    <div class="input-group">
+                        <input type="text" required>
+                        <label for="username">Имя пользователя</label>
+                    </div>
+                    <!-- Поле для ввода email -->
+                    <div class="input-group">
+                        <input type="email" required>
+                        <label for="email">Email</label>
+                    </div>
+                    <!-- Поле для ввода пароля -->
+                    <div class="input-group">
+                        <input type="password" required>
+                        <label for="password">Пароль</label>
+                    </div>
+                    <!-- Поле для подтверждения пароля -->
+                    <div class="input-group">
+                        <input type="password" required>
+                        <label for="confirm-password">Повторите пароль</label>
+                    </div>
+                    <!-- Кнопка отправки формы -->
+                    <button type="submit" class="submit-btn">Зарегистрироваться</button>
+                </form>
             </div>
         </div>
     </div>
-
 </body>
 </html>
