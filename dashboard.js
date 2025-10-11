@@ -3,13 +3,19 @@ class UserDashboard {
     constructor() {
         this.user = null;
         this.userData = null;
+        this.initialized = false;
         this.init();
     }
 
     async init() {
-        await this.checkAuth();
-        this.loadUserData();
-        this.createUserAvatar();
+        if (this.initialized) return;
+        
+        const isAuthenticated = await this.checkAuth();
+        if (isAuthenticated) {
+            this.loadUserData();
+            this.createUserAvatar();
+            this.initialized = true;
+        }
     }
 
     async checkAuth() {
@@ -21,13 +27,17 @@ class UserDashboard {
                     resolve(true);
                 } else {
                     // Если пользователь не авторизован, перенаправляем на вход
-                    window.location.href = 'index.html';
+                    // Но только если мы еще не на странице входа
+                    if (!window.location.pathname.includes('index.html')) {
+                        window.location.href = 'index.html';
+                    }
                     resolve(false);
                 }
             });
         });
     }
 
+    // Остальные методы остаются без изменений...
     async loadUserProfile() {
         try {
             const userDoc = await db.collection('users').doc(this.user.uid).get();
@@ -54,6 +64,7 @@ class UserDashboard {
             document.getElementById('info-username').textContent = this.userData.displayName || this.userData.username || '-';
             document.getElementById('info-email').textContent = this.user.email;
             document.getElementById('info-userid').textContent = this.user.uid;
+            document.getElementById('info-last-login').textContent = new Date().toLocaleString('ru-RU');
             
             // Статус email
             const emailStatus = document.getElementById('info-email-status');
@@ -78,6 +89,7 @@ class UserDashboard {
             // Заглушки для статистики
             document.getElementById('stat-projects').textContent = '0';
             document.getElementById('stat-activity').textContent = '100%';
+            document.getElementById('stat-level').textContent = '1';
         }
     }
 
@@ -149,6 +161,11 @@ class UserDashboard {
         
         document.body.appendChild(menu);
         this.userMenu = menu;
+        
+        // Предотвращаем закрытие при клике на меню
+        menu.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
     }
 
     toggleUserMenu() {
@@ -179,12 +196,14 @@ function editProfile() {
 }
 
 function logout() {
-    auth.signOut().then(() => {
-        localStorage.removeItem('userLoggedIn');
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('username');
-        window.location.href = 'index.html';
-    });
+    if (confirm('Вы уверены, что хотите выйти?')) {
+        auth.signOut().then(() => {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('username');
+            window.location.href = 'index.html';
+        });
+    }
 }
 
 // Инициализация дашборда когда DOM загружен
