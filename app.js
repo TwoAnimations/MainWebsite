@@ -656,3 +656,26 @@ function logout() {
 document.addEventListener('DOMContentLoaded', () => {
     new UserDashboard();
 });
+
+// Функция для адаптации высоты контента
+function adjustContentHeight() {
+    const container = document.querySelector('.container');
+    const glassCard = document.querySelector('.glass-card');
+    
+    if (container && glassCard) {
+        const viewportHeight = window.innerHeight;
+        const containerTop = container.getBoundingClientRect().top;
+        const availableHeight = viewportHeight - containerTop - 40; // 40px отступ снизу
+        
+        // Устанавливаем максимальную высоту для контента
+        glassCard.style.maxHeight = availableHeight + 'px';
+        glassCard.style.overflowY = 'auto';
+    }
+}
+
+// Вызываем при загрузке и изменении размера окна
+window.addEventListener('load', adjustContentHeight);
+window.addEventListener('resize', adjustContentHeight);
+
+// Также вызываем когда контент динамически меняется
+setTimeout(adjustContentHeight, 100);
