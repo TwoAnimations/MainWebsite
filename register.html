@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TwoAnimations - Регистрация</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -17,7 +17,7 @@
             <!-- Форма регистрации -->
             <div class="form-container active" id="register-form">
                 <h2>Создать аккаунт</h2>
-                <form class="auth-form">
+                <form class="auth-form" id="registerForm">
                     <div class="input-group">
                         <input type="text" id="register-name" required>
                         <label for="register-name">Имя пользователя</label>
@@ -27,8 +27,8 @@
                         <label for="register-email">Email</label>
                     </div>
                     <div class="input-group">
-                        <input type="password" id="register-password" required>
-                        <label for="register-password">Пароль</label>
+                        <input type="password" id="register-password" required minlength="6">
+                        <label for="register-password">Пароль (мин. 6 символов)</label>
                     </div>
                     <div class="input-group">
                         <input type="password" id="register-confirm" required>
@@ -37,10 +37,29 @@
                     <button type="submit" class="btn-primary">Создать аккаунт</button>
                 </form>
                 <p class="switch-form">
-                    Уже есть аккаунт? <a href="https://twoanimations.github.io/MainWebsite/index.html" class="switch-link">Войти</a>
+                    Уже есть аккаунт? <a href="index.html" class="switch-link">Войти</a>
                 </p>
+            </div>
+
+            <!-- Форма подтверждения email -->
+            <div class="form-container" id="verify-form">
+                <h2>Подтвердите email</h2>
+                <div class="verify-message">
+                    <p>Мы отправили код подтверждения на <span id="user-email"></span></p>
+                    <div class="input-group">
+                        <input type="text" id="verify-code" placeholder="Введите 6-значный код" required maxlength="6">
+                    </div>
+                    <button class="btn-primary" id="verify-btn">Подтвердить</button>
+                    <button class="btn-secondary" id="resend-btn">Отправить код повторно</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
