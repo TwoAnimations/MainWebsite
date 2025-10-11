@@ -1,45 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Обо мне</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TwoAnimations - Регистрация</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="index.html">Главная</a> |
-            <a href="register.html">Обо мне</a> |
-        </nav>
-    </header>
-    
-    <!-- Основной контент -->
-    <main>
-        <!-- Форма регистрации -->
-        <div class="form-container" id="register-form">
-            <h2>Создать аккаунт</h2>
-            <form class="auth-form">
-                <div class="input-group">
-                    <input type="text" id="register-name" required placeholder=" ">
-                    <label for="register-name">Имя пользователя</label>
-                </div>
-                <div class="input-group">
-                    <input type="email" id="register-email" required placeholder=" ">
-                    <label for="register-email">Email</label>
-                </div>
-                <div class="input-group">
-                    <input type="password" id="register-password" required placeholder=" ">
-                    <label for="register-password">Пароль</label>
-                </div>
-                <div class="input-group">
-                    <input type="password" id="register-confirm" required placeholder=" ">
-                    <label for="register-confirm">Подтвердите пароль</label>
-                </div>
-                <button type="submit" class="btn-primary">Создать аккаунт</button>
-            </form>
-            <p class="switch-form">
-                Уже есть аккаунт? <a href="https://twoanimations.github.io/MainWebsite/index.html" class="switch-link">Войти</a>
-            </p>
+    <div class="container">
+        <div class="glass-card">
+            <div class="logo">
+                <h1>TwoAnimations</h1>
+                <p>Присоединяйтесь к нам!</p>
+            </div>
+
+            <!-- Форма регистрации -->
+            <div class="form-container active" id="register-form">
+                <h2>Создать аккаунт</h2>
+                <form class="auth-form">
+                    <div class="input-group">
+                        <input type="text" id="register-name" required>
+                        <label for="register-name">Имя пользователя</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="register-email" required>
+                        <label for="register-email">Email</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="register-password" required>
+                        <label for="register-password">Пароль</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="register-confirm" required>
+                        <label for="register-confirm">Подтвердите пароль</label>
+                    </div>
+                    <button type="submit" class="btn-primary">Создать аккаунт</button>
+                </form>
+                <p class="switch-form">
+                    Уже есть аккаунт? <a href="https://twoanimations.github.io/MainWebsite/index.html" class="switch-link">Войти</a>
+                </p>
+            </div>
         </div>
-    </main>
+    </div>
 </body>
 </html>
