@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TwoAnimations - Личный кабинет</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <div class="logo">
+                <h1>TwoAnimations</h1>
+                <p>Личный кабинет</p>
+            </div>
+            
+            <div id="dashboard-content">
+                <div class="user-info">
+                    <h2>Добро пожаловать!</h2>
+                    <p>Email: <span id="dashboard-email"></span></p>
+                    <p>Статус: <span class="status-verified">✓ Email подтвержден</span></p>
+                </div>
+                
+                <div class="dashboard-actions">
+                    <button class="btn-primary" onclick="logout()">Выйти</button>
+                </div>
+            </div>
+            
+            <div id="auth-required" style="display: none;">
+                <h2>Требуется авторизация</h2>
+                <p>Пожалуйста, войдите в систему для доступа к этой странице.</p>
+                <button class="btn-primary" onclick="window.location.href='index.html'">Войти</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Проверка авторизации для dashboard
+        auth.onAuthStateChanged((user) => {
+            if (user && user.emailVerified) {
+                document.getElementById('dashboard-email').textContent = user.email;
+                document.getElementById('dashboard-content').style.display = 'block';
+                document.getElementById('auth-required').style.display = 'none';
+            } else {
+                document.getElementById('dashboard-content').style.display = 'none';
+                document.getElementById('auth-required').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
