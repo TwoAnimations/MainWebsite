@@ -1,4 +1,4 @@
-/* Сбрасываем стандартные отступы и задаем фоновый градиент для всей страницы */
+/* Общие стили */
 * {
     margin: 0;
     padding: 0;
@@ -7,202 +7,279 @@
 }
 
 body {
-    /* Создаем красивый градиентный фон */
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400% 400%;
-    /* Анимируем градиент фон */
-    animation: gradient 15s ease infinite;
-    height: 100vh;
-    /* Центрируем форму с помощью Flexbox */
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                url('images/sunset.jpg') no-repeat center center fixed;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    color: #fff;
 }
 
-/* Анимация для плавного движения градиента */
-@keyframes gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Стили для основного контейнера формы */
-.form-container {
-    width: 400px;
+.container {
     position: relative;
+    width: 850px;
+    max-width: 100%;
+    min-height: 550px;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     overflow: hidden;
 }
 
-/* Эффект "Жидкого Стекла" (Glassmorphism) */
-.form-container::before {
-    content: '';
+.form-container {
     position: absolute;
     top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container {
     left: 0;
-    right: 0;
-    bottom: 0;
-    /* Полупрозрачный белый фон с размытием */
-    background: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(10px);
-    /* Тонкая белая рамка для усиления эффекта стекла */
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    z-index: -1;
+    width: 50%;
+    z-index: 2;
 }
 
-/* Стили для блока с вкладками */
-.tabs {
-    display: flex;
-    position: relative;
-    background: rgba(0, 0, 0, 0.1);
-}
-
-/* Скрываем настоящие радио-кнопки */
-.tabs input[type="radio"] {
-    display: none;
-}
-
-/* Стили для меток-вкладок */
-.tab-label {
-    flex: 1;
-    padding: 15px;
-    text-align: center;
-    cursor: pointer;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 600;
-    transition: all 0.3s ease;
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
     z-index: 1;
 }
 
-/* Эффект при наведении на вкладку */
-.tab-label:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-/* Стили для активной вкладки (когда соответствующая радио-кнопка выбрана) */
-#login-tab:checked ~ .tabs .tab-label[for="login-tab"],
-#register-tab:checked ~ .tabs .tab-label[for="register-tab"] {
-    color: #333;
-}
-
-/* Подсветка под активной вкладкой */
-.tabs::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 50%;
-    height: 3px;
-    background: white;
-    transition: transform 0.3s ease;
-}
-
-/* Сдвигаем подсветку вправо при выборе регистрации */
-#register-tab:checked ~ .tabs::after {
+.container.right-panel-active .sign-in-container {
     transform: translateX(100%);
+    opacity: 0;
 }
 
-/* Обертка для форм. Ширина 200%, т.к. содержит 2 формы по 100% ширины */
-.forms-wrapper {
-    display: flex;
-    width: 200%;
-    transition: transform 0.5s ease-in-out;
+.container.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
 }
 
-/* Сдвигаем обертку, чтобы показать форму регистрации */
-#register-tab:checked ~ .forms-wrapper {
-    transform: translateX(-50%);
+@keyframes show {
+    0%, 49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+    50%, 100% {
+        opacity: 1;
+        z-index: 5;
+    }
 }
 
-/* Стили для каждой отдельной формы */
+/* Стили форм */
 .form {
-    width: 50%;
-    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
-}
-
-.form h2 {
-    color: white;
-    margin-bottom: 30px;
+    padding: 0 50px;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
 }
 
-/* Стили для группы полей ввода */
+.form h1 {
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #fff;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 .input-group {
     position: relative;
-    margin-bottom: 25px;
+    margin: 15px 0;
+    width: 100%;
 }
 
 .input-group input {
-    width: 100%;
-    padding: 10px 0;
-    font-size: 16px;
-    color: white;
-    border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    outline: none;
     background: transparent;
-    transition: border-color 0.3s;
+    border: none;
+    width: 100%;
+    padding: 12px 0;
+    font-size: 16px;
+    color: #fff;
+    outline: none;
 }
 
-.input-group input:focus {
-    border-bottom-color: white;
-}
-
-/* Стили для плавающих label */
 .input-group label {
     position: absolute;
-    top: 10px;
+    top: 50%;
     left: 0;
+    transform: translateY(-50%);
     font-size: 16px;
     color: rgba(255, 255, 255, 0.7);
     pointer-events: none;
-    transition: all 0.3s ease;
+    transition: 0.3s ease;
 }
 
-/* Эффект поднятия label при фокусе или если поле заполнено */
-.input-group input:focus ~ label,
-.input-group input:valid ~ label {
-    top: -15px;
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: -5px;
     font-size: 12px;
-    color: white;
+    color: #ff7e5f;
 }
 
-/* Стили для кнопки отправки формы */
-.submit-btn {
-    padding: 12px;
-    border: none;
-    border-radius: 30px;
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 10px;
+.underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.5);
+    overflow: hidden;
 }
 
-.submit-btn:hover {
-    background: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.underline::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #ff7e5f, #feb47b);
+    transition: 0.3s;
 }
 
-/* Стили для ссылок (например, "Забыли пароль?") */
-.link {
-    color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    margin-top: 20px;
-    text-decoration: none;
+.input-group input:focus ~ .underline::after,
+.input-group input:valid ~ .underline::after {
+    left: 0;
+}
+
+.forgot-password {
+    color: rgba(255, 255, 255, 0.7);
     font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0;
     transition: color 0.3s;
 }
 
-.link:hover {
-    color: white;
-    text-decoration: underline;
+.forgot-password:hover {
+    color: #ff7e5f;
+}
+
+.btn {
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: linear-gradient(45deg, #ff7e5f, #feb47b);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-top: 20px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+}
+
+.btn.ghost {
+    background: transparent;
+    border: 2px solid #fff;
+}
+
+/* Стили оверлея */
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.container.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+.overlay {
+    background: linear-gradient(to right, rgba(255, 126, 95, 0.8), rgba(254, 180, 123, 0.8));
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: #fff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.container.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.container.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        min-height: 600px;
+    }
+    
+    .form-container {
+        width: 100%;
+    }
+    
+    .sign-up-container {
+        transform: translateX(100%);
+    }
+    
+    .container.right-panel-active .sign-up-container {
+        transform: translateX(0);
+    }
+    
+    .overlay-container {
+        display: none;
+    }
 }
