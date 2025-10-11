@@ -1,192 +1,258 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodePlatform - Вход и регистрация</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <!-- Основной контейнер страницы -->
-    <div class="page-container">
-        
-        <!-- Логотип платформы в левом верхнем углу -->
-        <header class="platform-header">
-            <div class="platform-logo">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
-                    <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2"/>
-                    <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/>
-                    <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/>
-                    <polyline points="10,9 9,9 8,9" stroke="currentColor" stroke-width="2"/>
-                </svg>
-                <span>CodePlatform</span>
-            </div>
-        </header>
+/* Подключаем красивый шрифт */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-        <!-- Основной контент с формами -->
-        <main class="main-content">
-            
-            <!-- Заголовок страницы -->
-            <h1 class="page-title">
-                Войдите в свою учетную запись
-            </h1>
+/* Сбрасываем стандартные отступы и задаем базовые стили */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-            <!-- Контейнер для формы аутентификации -->
-            <div class="auth-container">
-                
-                <!-- Скрытые радиокнопки для переключения между формами -->
-                <input type="radio" name="auth-tab" id="login-tab" class="tab-toggle" checked>
-                <input type="radio" name="auth-tab" id="signup-tab" class="tab-toggle">
-                
-                <!-- Переключатель между входом и регистрацией -->
-                <div class="tab-navigation">
-                    <label for="login-tab" class="tab-button">
-                        Вход
-                    </label>
-                    <label for="signup-tab" class="tab-button">
-                        Регистрация
-                    </label>
-                </div>
+body {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    /* Если вы добавили фоновое изображение, раскомментируйте строку ниже */
+    /* background: url('assets/background.jpg') no-repeat center center fixed; */
+}
 
-                <!-- Форма входа в систему -->
-                <form class="auth-form" id="login-form" action="#" method="POST">
-                    <div class="form-group">
-                        <label for="username" class="input-label">
-                            Имя пользователя или email адрес
-                        </label>
-                        <input type="text" 
-                               id="username" 
-                               name="username" 
-                               class="form-input" 
-                               required 
-                               autocomplete="username">
-                    </div>
+/* Главный контейнер */
+.container {
+    background-color: rgba(255, 255, 255, 0.2); /* Полупрозрачный белый фон */
+    border-radius: 20px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+    backdrop-filter: blur(10px); /* Размытие фона позади контейнера - ключевой эффект стекла! */
+    -webkit-backdrop-filter: blur(10px); /* Для поддержки в Safari */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Тонкая белая рамка для усиления эффекта */
+}
 
-                    <div class="form-group">
-                        <div class="password-header">
-                            <label for="password" class="input-label">
-                                Пароль
-                            </label>
-                            <a href="#forgot-password" class="forgot-link">
-                                Забыли пароль?
-                            </a>
-                        </div>
-                        <input type="password" 
-                               id="password" 
-                               name="password" 
-                               class="form-input" 
-                               required 
-                               autocomplete="current-password">
-                    </div>
+/* Контейнеры форм */
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
 
-                    <button type="submit" class="submit-button primary">
-                        Войти
-                    </button>
+/* Контейнер для входа - изначально слева */
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
 
-                    <div class="form-footer">
-                        <p>
-                            Впервые на платформе? 
-                            <label for="signup-tab" class="switch-link">
-                                Создайте аккаунт
-                            </label>
-                        </p>
-                    </div>
-                </form>
+/* Контейнер для регистрации - изначально справа и НЕВИДИМ */
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
 
-                <!-- Форма регистрации нового пользователя -->
-                <form class="auth-form" id="signup-form" action="#" method="POST">
-                    <div class="form-group">
-                        <label for="new-username" class="input-label">
-                            Имя пользователя
-                        </label>
-                        <input type="text" 
-                               id="new-username" 
-                               name="new-username" 
-                               class="form-input" 
-                               required 
-                               pattern="[a-zA-Z0-9_-]{4,39}"
-                               title="Имя пользователя должно содержать от 4 до 39 символов (буквы, цифры, дефисы и подчеркивания)"
-                               autocomplete="username">
-                        <div class="input-hint">
-                            Имя пользователя должно содержать от 4 до 39 символов
-                        </div>
-                    </div>
+/* Стили для самих форм */
+form {
+    background-color: rgba(255, 255, 255, 0.9); /* Почти непрозрачный белый для читаемости */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    text-align: center;
+}
 
-                    <div class="form-group">
-                        <label for="email" class="input-label">
-                            Email адрес
-                        </label>
-                        <input type="email" 
-                               id="email" 
-                               name="email" 
-                               class="form-input" 
-                               required 
-                               autocomplete="email">
-                        <div class="input-hint">
-                            Мы отправим на этот адрес письмо с подтверждением
-                        </div>
-                    </div>
+h1 {
+    font-weight: 700;
+    margin: 10px 0;
+    color: #333;
+}
 
-                    <div class="form-group">
-                        <label for="new-password" class="input-label">
-                            Пароль
-                        </label>
-                        <input type="password" 
-                               id="new-password" 
-                               name="new-password" 
-                               class="form-input" 
-                               required 
-                               pattern=".{8,}"
-                               title="Пароль должен содержать минимум 8 символов"
-                               autocomplete="new-password">
-                        <div class="input-hint">
-                            Пароль должен содержать минимум 8 символов
-                        </div>
-                    </div>
+.social-container {
+    margin: 20px 0;
+}
 
-                    <button type="submit" class="submit-button secondary">
-                        Зарегистрироваться
-                    </button>
+.social-container a {
+    border: 1px solid #dddddd;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 5px;
+    height: 40px;
+    width: 40px;
+    transition: all 0.3s ease;
+}
 
-                    <div class="form-footer">
-                        <p>
-                            Нажимая «Зарегистрироваться», вы соглашаетесь с
-                            <a href="#terms" class="footer-link">Условиями предоставления услуг</a> и
-                            <a href="#privacy" class="footer-link">Политикой конфиденциальности</a>.
-                        </p>
-                        <p class="switch-prompt">
-                            Уже есть аккаунт?
-                            <label for="login-tab" class="switch-link">
-                                Войдите здесь
-                            </label>
-                        </p>
-                    </div>
-                </form>
-            </div>
+.social-container a:hover {
+    transform: scale(1.1);
+    border-color: #667eea;
+}
 
-            <!-- Дополнительная информация -->
-            <div class="additional-info">
-                <h2>Преимущества нашей платформы</h2>
-                <ul class="features-list">
-                    <li>Современная среда для разработки</li>
-                    <li>Бесплатные приватные репозитории</li>
-                    <li>Интеграция с популярными инструментами</li>
-                    <li>Надежная платформа для совместной работы</li>
-                </ul>
-            </div>
-        </main>
+.social-container img {
+    width: 20px;
+    height: 20px;
+}
 
-        <!-- Подвал страницы -->
-        <footer class="page-footer">
-            <nav class="footer-nav">
-                <a href="#terms" class="footer-link">Условия</a>
-                <a href="#privacy" class="footer-link">Конфиденциальность</a>
-                <a href="#security" class="footer-link">Безопасность</a>
-                <a href="#support" class="footer-link">Поддержка</a>
-            </nav>
-            <p class="copyright">&copy; 2024 CodePlatform</p>
-        </footer>
-    </div>
-</body>
-</html>
+span {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Стили для полей ввода */
+input {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    background-color: #e0e0e0;
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+}
+
+/* Стили для кнопок */
+button {
+    border-radius: 8px;
+    border: 1px solid #667eea;
+    background-color: #667eea;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in, background-color 0.3s ease;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+button:focus {
+    outline: none;
+}
+
+button:hover {
+    background-color: #5a6fd8;
+}
+
+button.ghost {
+    background-color: transparent;
+    border-color: #ffffff;
+    color: #fff;
+}
+
+button.ghost:hover {
+    background-color: #fff;
+    color: #333;
+}
+
+a {
+    color: #333;
+    font-size: 12px;
+    text-decoration: none;
+    margin: 15px 0;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #667eea;
+}
+
+/* Стили для панели перекрытия */
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.overlay {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: #ffffff;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+/* Магия переключения с помощью :target */
+
+/* Когда контейнер является целью (url имеет #signUp) */
+.container#signUp .sign-in-container {
+    transform: translateX(100%);
+}
+
+.container#signUp .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+}
+
+.container#signUp .overlay-container {
+    transform: translateX(-100%);
+}
+
+.container#signUp .overlay {
+    transform: translateX(50%);
+}
+
+.container#signUp .overlay-left {
+    transform: translateX(0);
+}
+
+.container#signUp .overlay-right {
+    transform: translateX(20%);
+}
