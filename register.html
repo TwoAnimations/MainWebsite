@@ -12,11 +12,33 @@
         </nav>
     </header>
     
-    <h1>Обо мне</h1>
-    <p>Здесь я расскажу о себе и своих навыках.</p>
-    
-    <footer>
-        <p>© 2024 Моя страница</p>
-    </footer>
+                <!-- Форма регистрации -->
+            <div class="form-container" id="register-form">
+                <h2>Создать аккаунт</h2>
+                <form class="auth-form">
+                    <div class="input-group">
+                        <input type="text" id="register-name" required>
+                        <label for="register-name">Имя пользователя</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="register-email" required>
+                        <label for="register-email">Email</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="register-password" required>
+                        <label for="register-password">Пароль</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="register-confirm" required>
+                        <label for="register-confirm">Подтвердите пароль</label>
+                    </div>
+                    <button type="submit" class="btn-primary">Создать аккаунт</button>
+                </form>
+                <p class="switch-form">
+                    Уже есть аккаунт? <a href="#login" class="switch-link">Войти</a>
+                </p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
