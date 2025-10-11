@@ -41,25 +41,27 @@
                 </p>
             </div>
 
-            <!-- Форма подтверждения email -->
-            <div class="form-container" id="verify-form">
-                <h2>Подтвердите email</h2>
-                <div class="verify-message">
-                    <p>Мы отправили код подтверждения на <span id="user-email"></span></p>
-                    <div class="input-group">
-                        <input type="text" id="verify-code" placeholder="Введите 6-значный код" required maxlength="6">
-                    </div>
-                    <button class="btn-primary" id="verify-btn">Подтвердить</button>
-                    <button class="btn-secondary" id="resend-btn">Отправить код повторно</button>
-                </div>
-            </div>
+           <!-- Форма подтверждения email -->
+<div class="form-container" id="verify-form">
+    <h2>Подтвердите ваш email</h2>
+    <div class="verify-message">
+        <div class="email-icon">📧</div>
+        <p>Мы отправили ссылку для подтверждения на:</p>
+        <p class="user-email" id="user-email"></p>
+        <p class="instruction">Пожалуйста, проверьте вашу почту и перейдите по ссылке в письме для активации аккаунта.</p>
+        
+        <div class="verification-actions">
+            <button class="btn-secondary" id="resend-btn">Отправить ссылку повторно</button>
+            <button class="btn-primary" onclick="window.location.href='index.html'">Перейти ко входу</button>
+        </div>
+        
+        <div class="email-tips">
+            <h4>Не видите письмо?</h4>
+            <ul>
+                <li>Проверьте папку "Спам" или "Рассылки"</li>
+                <li>Убедитесь, что email введен правильно</li>
+                <li>Подождите несколько минут</li>
+            </ul>
         </div>
     </div>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="app.js"></script>
-</body>
-</html>
+</div>
