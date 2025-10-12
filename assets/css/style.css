@@ -128,7 +128,6 @@ h2 {
     border-radius: 12px;
     color: white;
     font-size: 16px;
-    backdrop-filter: blur(10px);
     transition: all 0.3s ease;
 }
 
@@ -146,23 +145,26 @@ h2 {
     transform: translateY(-50%);
     color: rgba(255, 255, 255, 0.7);
     font-size: 16px;
+    border-radius: 10px;
     pointer-events: none;
     transition: all 0.3s ease;
+    padding: 2px 8px;
 }
 
 .input-group input:focus + label,
 .input-group input:valid + label {
     top: 0;
     font-size: 12px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
     padding: 2px 8px;
     border-radius: 10px;
     color: white;
+    background-color: rgba(75, 75, 75, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 15px;
     border-radius: 12px;
     color: white;
@@ -170,14 +172,14 @@ h2 {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
     margin-top: 10px;
+
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
     box-shadow: 
-        0 10px 20px rgba(0, 0, 0, 0.2),
+        0 10px 20px rgba(83, 83, 83, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -233,9 +235,10 @@ h2 {
     color: rgba(255, 255, 255, 0.7);
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
     font-size: 14px;
     font-weight: 500;
+    margin: 2px;
 }
 
 .switch-btn.active {
